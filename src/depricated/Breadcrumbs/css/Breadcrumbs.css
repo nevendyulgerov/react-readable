@@ -1,0 +1,45 @@
+
+/**
+ * Styles for Breadcrumbs
+ */
+
+.component.breadcrumbs {
+  width: 1240px;
+  margin: 10px auto;
+  max-width: 100%;
+  padding: 10px;
+}
+
+.component.breadcrumbs .breadcrumbs-label {
+  padding: 0 5px 0 0;
+  color: #d5d6d2;
+  cursor: default;
+}
+
+.component.breadcrumbs .breadcrumbs-container {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #bf9a77;
+  box-shadow: 0 2px 1px 0 rgba(0,0,0,0.12),0 1px 1px 0 rgba(239,239,239,0.6);
+}
+
+.component.breadcrumbs .breadcrumb {
+  color: #fff;
+}
+
+.component.breadcrumbs .breadcrumb-item {
+  display: inline-block;
+}
+
+.component.breadcrumbs .breadcrumb-separator {
+  margin: 0 5px;
+  color: #d5d6d2;
+}
+
+@media (max-width: 1240px) {
+
+  .component.breadcrumbs {
+    margin: 10px auto 0 auto;
+    width: calc(100% - 20px);
+  }
+}
