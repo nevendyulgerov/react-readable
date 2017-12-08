@@ -1,0 +1,32 @@
+
+/**
+ * Styles for component CounterVoteScore
+ */
+
+.component.counter-vote-score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: default;
+  position: relative;
+  top: 3px;
+  font-weight: 300;
+  margin: 0 5px 0 0;
+}
+
+.component.counter-vote-score.positive {
+  color: #6fb98f !important;
+}
+
+.component.counter-vote-score.negative {
+  color: #d35c37 !important;
+}
+
+.component.counter-vote-score .score {
+  margin: 0 2px 0 0;
+}
+
+.component.counter-vote-score .icon {
+  position: relative;
+  bottom: 2px;
+}
