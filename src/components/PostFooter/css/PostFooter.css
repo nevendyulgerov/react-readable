@@ -1,0 +1,52 @@
+
+/**
+ * Styles for component PostFooter
+ */
+
+.component.post-footer {
+  display: flex;
+  position: relative;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.component.post .post-footer .options {
+  opacity: 0;
+  position: relative;
+  top: 2px;
+  transition: all 0.15s ease-in-out;
+  margin: 0 20px 0 0;
+}
+
+.component.post:hover .post-footer .options {
+  opacity: 1;
+  transition: all 0.15s ease-in-out;
+}
+
+.component.post-footer .trigger.view-category {
+  color: #fff;
+  padding: 0 2px;
+}
+
+.component.post-footer .category {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 0 5px 2px 5px;
+  z-index: 5;
+  text-align: center;
+  background-color: #d6c6b9;
+  color: #fff;
+  cursor: default;
+  border-radius: 2px;
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.16),0 1px 1px 0 rgba(239,239,239,0.12);
+}
+
+.component.post-footer .trigger.toggle-comments {
+  background-color: transparent;
+}
+
+.component.post-footer .trigger.toggle-comments * {
+  pointer-events: none;
+}
+
