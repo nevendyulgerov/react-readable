@@ -3,7 +3,7 @@ import ammo from '../../../common/libs/ammo';
 import {Link} from 'react-router-dom';
 import '../css/Navigation.css';
 import { connect } from 'react-redux';
-import { updateActiveCategory } from '../../../store/actions';
+import {enableAddPostModal, updateActiveCategory} from '../../../store/actions';
 
 class Navigation extends React.Component {
 
@@ -66,7 +66,7 @@ class Navigation extends React.Component {
             </li>
 
             <li>
-              <button onClick={() => this.props.activateAddPostModal()}>Add post</button>
+              <button onClick={() => this.props.enableAddPostModal()}>Add post</button>
             </li>
 
           </ul>
@@ -85,7 +85,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateActiveCategory: category => dispatch(updateActiveCategory(category))
+    updateActiveCategory: category => dispatch(updateActiveCategory(category)),
+    enableAddPostModal: () => dispatch(enableAddPostModal())
   };
 };
 

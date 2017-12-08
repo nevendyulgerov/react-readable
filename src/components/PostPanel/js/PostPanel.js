@@ -51,11 +51,11 @@ class PostPanel extends React.Component {
         />
         <PostFooter
           post={post}
-          addComment={this.addComment}
           upvotePost={this.upvotePost}
           downvotePost={this.downvotePost}
-          setEditablePost={this.props.setEditablePost}
           deletePost={this.deletePost}
+          setEditablePost={this.props.setEditablePost}
+          setEditableComment={this.props.setEditableComment}
           toggleComments={this.toggleComments}
         />
 

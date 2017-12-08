@@ -10,14 +10,29 @@ import {
   DOWNVOTE_POST,
   ADD_CATEGORIES,
   UPDATE_ACTIVE_CATEGORY,
-  UPDATE_ACTIVE_POST
+  UPDATE_ACTIVE_COMMENT,
+  UPDATE_ACTIVE_POST,
+  MODAL_ADD_POST_ENABLED,
+  MODAL_ADD_POST_DISABLED,
+  MODAL_EDIT_POST_ENABLED,
+  MODAL_EDIT_POST_DISABLED,
+  MODAL_ADD_COMMENT_ENABLED,
+  MODAL_ADD_COMMENT_DISABLED,
+  MODAL_EDIT_COMMENT_ENABLED,
+  MODAL_EDIT_COMMENT_DISABLED
 } from '../actions';
 
 const initialState = {
   posts: [],
   categories: [],
   activeCategory: '',
-  activePost: ''
+  activePost: '',
+  modals: {
+    addPost: false,
+    ediPost: false,
+    addComment: false,
+    editComment: false
+  }
 };
 
 /**
@@ -117,7 +132,59 @@ const activeCategory = (state = '', action) => {
 const activePost = (state = '', action) => {
   switch ( action.type ) {
     case UPDATE_ACTIVE_POST:
-      return action.postId;
+      return action.post;
+    default:
+      return state;
+  }
+};
+
+/**
+ * @description Active comment reducer
+ * @param state
+ * @param action
+ * @returns {string}
+ */
+const activeComment = (state = '', action) => {
+  switch ( action.type ) {
+    case UPDATE_ACTIVE_COMMENT:
+      return action.comment;
+    default:
+      return state;
+  }
+};
+
+/**
+ * @description Modals reducer
+ * @param state
+ * @param action
+ * @returns {*}
+ */
+const modals = (state = initialState.modals, action) => {
+  switch ( action.type ) {
+    case MODAL_ADD_POST_ENABLED:
+      return Object.assign({}, state, { addPost: true });
+
+    case MODAL_ADD_POST_DISABLED:
+      return Object.assign({}, state, { addPost: false });
+
+    case MODAL_EDIT_POST_ENABLED:
+      return Object.assign({}, state, { editPost: true });
+
+    case MODAL_EDIT_POST_DISABLED:
+      return Object.assign({}, state, { editPost: false });
+
+    case MODAL_ADD_COMMENT_ENABLED:
+      return Object.assign({}, state, { addComment: true });
+
+    case MODAL_ADD_COMMENT_DISABLED:
+      return Object.assign({}, state, { addComment: false });
+
+    case MODAL_EDIT_COMMENT_ENABLED:
+      return Object.assign({}, state, { editComment: true });
+
+    case MODAL_EDIT_COMMENT_DISABLED:
+      return Object.assign({}, state, { editComment: false });
+
     default:
       return state;
   }
@@ -129,7 +196,9 @@ export default reduceReducers(
     posts,
     categories,
     activeCategory,
-    activePost
+    activePost,
+    activeComment,
+    modals
   }),
   localStore
 );

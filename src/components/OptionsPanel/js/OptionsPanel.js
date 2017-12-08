@@ -14,7 +14,7 @@ const OptionsPanel = props => {
     <div className="component options-panel">
 
       {type === 'post' && (
-        <button className="trigger comment" title={`Comment on ${type}`} onClick={() => {
+        <button className="trigger comment" title={`Add comment`} onClick={() => {
           if ( ammo.isFunc(props.onComment) ) {
             props.onComment();
           }

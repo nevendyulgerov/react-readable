@@ -1,10 +1,9 @@
 import React from 'react';
 import '../css/PostFooter.css';
-import FaComment from 'react-icons/lib/fa/comment';
 import ammo from '../../../common/libs/ammo';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updateActiveCategory } from '../../../store/actions';
+import { updateActiveCategory, updateActivePost, enableEditPostModal } from '../../../store/actions';
 import OptionsPanel from '../../OptionsPanel';
 import CounterVoteScore from '../../CounterVoteScore';
 import CounterComments from '../../CounterComments';
@@ -16,9 +15,10 @@ class PostFooter extends React.Component {
 
   updateActiveCategory = category => this.props.updateActiveCategory(category);
 
+  updateActivePost = post => this.props.updateActivePost(post);
+
   render() {
     const post = this.props.post;
-    const hasComments = post.commentCount > 0;
 
     return (
       <footer className="component post-footer">
@@ -38,7 +38,10 @@ class PostFooter extends React.Component {
           onComment={() => this.props.addComment(post.id)}
           onUpvote={() => this.props.upvotePost(post.id)}
           onDownvote={() => this.props.downvotePost(post.id)}
-          onEdit={() => this.props.setEditablePost(post.id)}
+          onEdit={() => {
+            this.updateActivePost(post);
+            this.props.enableEditPostModal();
+          }}
           onDelete={() => this.props.deletePost(post.id)}
         />
 
@@ -46,7 +49,7 @@ class PostFooter extends React.Component {
 
         <button
           className="trigger toggle-comments"
-          onClick={() => this.props.toggleComments(post.id)} title="Toggle count"
+          onClick={() => this.props.toggleComments(post.id)} title="Toggle comments"
         >
           <CounterComments count={post.commentCount}/>
         </button>
@@ -57,13 +60,16 @@ class PostFooter extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    activeCategory: state.activeCategory
+    activeCategory: state.activeCategory,
+    activePost: state.activePost
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateActiveCategory: category => dispatch(updateActiveCategory(category))
+    updateActiveCategory: category => dispatch(updateActiveCategory(category)),
+    updateActivePost: post => dispatch(updateActivePost(post)),
+    enableEditPostModal: () => dispatch(enableEditPostModal())
   };
 };
 

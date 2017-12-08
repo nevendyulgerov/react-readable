@@ -64,10 +64,7 @@ class Grid extends React.Component {
         >
           {posts.length > 0 ? posts.map(post => (
             <div className="grid-item" key={post.id}>
-              <PostPanel
-                post={post}
-                setEditablePost={this.props.setEditablePost}
-              />
+              <PostPanel post={post}/>
             </div>
           )) : category && (
             <Notification

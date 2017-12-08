@@ -65,10 +65,10 @@ export const editPost = (postId, postOptions, callback) => {
           });
         }
 
-        seq.resolve();
+        seq.resolve(post);
       });
     })
-    .chain(() => callback())
+    .chain(seq => callback(seq.response.value))
     .execute();
 };
 

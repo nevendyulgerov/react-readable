@@ -15,6 +15,7 @@ import CommentsList from '../../CommentsList';
 class PostSingle extends React.Component {
   state = {
     post: {},
+    isActive: false,
     isCommentsSliderActive: false
   };
 
@@ -49,39 +50,13 @@ class PostSingle extends React.Component {
 
   addComment = postId => {
     console.log(postId);
-
-
   };
 
   syncPostData = () => {
-    const postId = this.props.activePost;
-
-    if ( ! ammo.isStr(postId) ) {
-      return false;
-    }
-
-    ammo.sequence()
-      .chain(seq => {
-
-        // attempt to retrieve post data from persistent storage
-        const cachedPost = getCachedItem('posts', 'id', postId);
-
-        if ( cachedPost ) {
-          return this.setState({ post: cachedPost }, () => seq.resolve());
-        }
-
-        // alternatively, make a request to the server to retrieve post data
-        api.getPost(postId, (err, post) => {
-          if ( err ) {
-            return console.error(err);
-          }
-          this.setState({ post }, () => seq.resolve());
-        });
-      })
-      .chain(() => {
-        ammo.select('.component.post').get().classList.add('active');
-      })
-      .execute();
+    this.setState({
+      post: this.props.activePost,
+      isActive: true
+    });
   };
 
   componentDidMount() {
@@ -100,9 +75,10 @@ class PostSingle extends React.Component {
 
   render() {
     const post = this.state.post || {};
+    const isActive = this.state.isActive;
 
     return (
-      <article className={`component post single-post`} data-id={post.id}>
+      <article className={`component post single-post ${isActive ? 'active' : ''}`} data-id={post.id}>
 
         <PostHeader
           post={post}

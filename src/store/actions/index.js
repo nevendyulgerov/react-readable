@@ -1,17 +1,31 @@
 export const SYNC_LOCAL_STORE = 'SYNC_LOCAL_STORE';
+
 export const ADD_POSTS = 'ADD_POSTS';
 export const EDIT_POST = 'EDIT_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const UPVOTE_POST = 'UPVOTE_POST';
 export const DOWNVOTE_POST = 'DOWNVOTE_POST';
+export const UPDATE_ACTIVE_POST = 'UPDATE_ACTIVE_POST';
+
 export const ADD_CATEGORIES = 'ADD_CATEGORIES';
+export const UPDATE_ACTIVE_CATEGORY = 'UPDATE_ACTIVE_CATEGORY';
+
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
-export const REMOVE_COMMENT = 'REMOVE_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const UPVOTE_COMMENT = 'UPVOTE_COMMENT';
 export const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT';
-export const UPDATE_ACTIVE_POST = 'UPDATE_ACTIVE_POST';
-export const UPDATE_ACTIVE_CATEGORY = 'UPDATE_ACTIVE_CATEGORY';
+export const UPDATE_ACTIVE_COMMENT = 'UPDATE_ACTIVE_COMMENT';
+
+export const MODAL_ADD_POST_ENABLED = 'MODAL_ADD_POST_ENABLED';
+export const MODAL_ADD_POST_DISABLED = 'MODAL_ADD_POST_DISABLED';
+export const MODAL_EDIT_POST_ENABLED = 'MODAL_EDIT_POST_ENABLED';
+export const MODAL_EDIT_POST_DISABLED = 'MODAL_EDIT_POST_DISABLED';
+export const MODAL_ADD_COMMENT_ENABLED = 'MODAL_ADD_COMMENT_ENABLED';
+export const MODAL_ADD_COMMENT_DISABLED = 'MODAL_ADD_COMMENT_DISABLED';
+export const MODAL_EDIT_COMMENT_ENABLED = 'MODAL_EDIT_COMMENT_ENABLED';
+export const MODAL_EDIT_COMMENT_DISABLED = 'MODAL_EDIT_COMMENT_DISABLED';
+
 
 /**
  * @description Sync local store action
@@ -27,7 +41,7 @@ export const syncLocalStore = data => {
 
 /**
  * @description Add posts action
- * @param posts
+ * @param {array} posts
  * @returns {{type: string, posts: *}}
  */
 export const addPosts = posts => {
@@ -113,12 +127,105 @@ export const updateActiveCategory = category => {
 
 /**
  * @description Update active post action
- * @param postId
+ * @param post
  * @returns {{type: string, category: *}}
  */
-export const updateActivePost = postId => {
+export const updateActivePost = post => {
   return {
     type: UPDATE_ACTIVE_POST,
-    postId
+    post
+  };
+};
+
+/**
+ * @description Update active comment action
+ * @param comment
+ * @returns {{type: string, postId: *}}
+ */
+export const updateActiveComment = comment => {
+  return {
+    type: UPDATE_ACTIVE_COMMENT,
+    comment
+  };
+};
+
+
+/**
+ * @description Enable add post modal action
+ * @returns {{type: string}}
+ */
+export const enableAddPostModal = () => {
+  return {
+    type: MODAL_ADD_POST_ENABLED
+  };
+};
+
+/**
+ * @description Disable add post modal action
+ * @returns {{type: string}}
+ */
+export const disableAddPostModal = () => {
+  return {
+    type: MODAL_ADD_POST_DISABLED
+  };
+};
+
+/**
+ * @description Enable edit post modal action
+ * @returns {{type: string}}
+ */
+export const enableEditPostModal = () => {
+  return {
+    type: MODAL_EDIT_POST_ENABLED
+  };
+};
+
+/**
+ * @description Disable edit post modal action
+ * @returns {{type: string}}
+ */
+export const disableEditPostModal = () => {
+  return {
+    type: MODAL_EDIT_POST_DISABLED
+  };
+};
+
+/**
+ * @description Enable add comment modal action
+ * @returns {{type: string}}
+ */
+export const enableAddCommentModal = () => {
+  return {
+    type: MODAL_ADD_COMMENT_ENABLED
+  };
+};
+
+/**
+ * @description Disable add comment modal action
+ * @returns {{type: string}}
+ */
+export const disableAddCommentModal = () => {
+  return {
+    type: MODAL_ADD_COMMENT_DISABLED
+  };
+};
+
+/**
+ * @description Enable edit comment modal action
+ * @returns {{type: string}}
+ */
+export const enableEditCommentModal = () => {
+  return {
+    type: MODAL_EDIT_COMMENT_ENABLED
+  };
+};
+
+/**
+ * @description Disable edit comment modal
+ * @returns {{type: string}}
+ */
+export const disableEditCommentModal = () => {
+  return {
+    type: MODAL_EDIT_COMMENT_DISABLED
   };
 };

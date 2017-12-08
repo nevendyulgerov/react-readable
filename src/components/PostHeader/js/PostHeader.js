@@ -6,15 +6,10 @@ import { connect } from 'react-redux';
 import { updateActivePost } from '../../../store/actions';
 
 class PostHeader extends React.Component {
-  state = {
-    gradientInitialized: false
-  };
-  selectPost = event => {
-    event.persist();
-    const postId = event.target.closest('.post-panel').getAttribute('data-id');
+  selectPost = () => {
 
     // update global state
-    this.props.updateActivePost(postId);
+    this.props.updateActivePost(this.props.post);
   };
 
   render() {
@@ -28,7 +23,7 @@ class PostHeader extends React.Component {
           <header className="panel-header" style={{background: ammo.randomGradient(122)}}>
             <div className="post-meta">
               <span className="author" title={'Author'}>{post.author}</span>
-              <time title="Created date">{ammo.formatTime(post.timestamp, 10)}</time>
+              <time title="Created date">{ammo.formatTime(post.timestamp)}</time>
             </div>
             <h2 className="post-title">{post.title}</h2>
           </header>

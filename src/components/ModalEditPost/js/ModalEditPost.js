@@ -3,16 +3,21 @@ import Modal from '../../Modal';
 import ammo from '../../../common/libs/ammo';
 import slickNote from '../../../common/libs/slick-note';
 import { connect } from 'react-redux'
-import { editPost } from '../../../store/actions';
+import { editPost, disableEditPostModal, updateActivePost } from '../../../store/actions';
 import PostActions from '../../PostActions';
 import '../css/ModalEditPost.css';
+const stateSchema = {
+  title: '',
+  body: '',
+  isFocused: false
+};
 
 class ModalEditPost extends React.Component {
+  state = Object.assign({}, stateSchema);
 
   validateModal = () => {
-    const modal = ammo.select('.component.edit-post-modal').get();
-    const title = ammo.select('[name="post-title"]', modal).get().value.trim();
-    const body = ammo.select('[name="post-body"]', modal).get().value.trim();
+    const title = this.state.title.trim();
+    const body = this.state.body.trim();
 
     if ( ! title || title === '' || title.length < 5 || title.length > 100 ) {
       slickNote.init({
@@ -35,15 +40,20 @@ class ModalEditPost extends React.Component {
   };
 
   editPost = callback => {
-    const modal = ammo.select('.component.edit-post-modal').get();
-    const title = ammo.select('[name="post-title"]', modal).get().value.trim();
-    const body = ammo.select('[name="post-body"]', modal).get().value.trim();
+    const post = this.props.activePost;
+    const title = this.state.title.trim();
+    const body = this.state.body.trim();
     const postOptions = { title, body };
 
-    PostActions.editPost(this.props.post.id, postOptions, () => {
+    PostActions.editPost(post.id, postOptions, () => {
+
+      // nullify local state
+      this.setState(Object.assign({}, stateSchema));
 
       // update global state
-      this.props.editPost(this.props.post.id, postOptions);
+      this.props.editPost(post.id, postOptions);
+      this.props.disableEditPostModal();
+      this.props.updateActivePost(Object.assign({}, post, postOptions));
 
       slickNote.init({
         type: 'success',
@@ -51,19 +61,27 @@ class ModalEditPost extends React.Component {
         content: 'Your post was edited successfully.'
       });
 
-      this.props.disableModal();
-
       if ( ammo.isFunc(callback) ) {
         callback();
       }
     });
   };
 
-  showModal = () => {
-    const modal = ammo.select('.component.edit-post-modal').get();
-    ammo.select('[name="post-title"]', modal).get().value = this.props.post.title;
-    ammo.select('[name="post-body"]', modal).get().value = this.props.post.body;
-  };
+  updateField(event, field) {
+    this.setState({
+      isFocused: true,
+      [field]: event.target.value
+    });
+  }
+
+  componentWillReceiveProps(newProps) {
+    if ( ammo.isObj(newProps.activePost) ) {
+      this.setState({
+        title: newProps.activePost.title,
+        body: newProps.activePost.body
+      });
+    }
+  }
 
   render() {
     return (
@@ -72,25 +90,27 @@ class ModalEditPost extends React.Component {
           title={'Edit Post'}
           type={'edit-post'}
           isActive={this.props.isActive}
-          showModal={this.showModal}
           beforeConfirm={this.validateModal}
-          confirmModal={() => {
-            this.editPost(() => {
-              if ( ammo.isFunc(this.props.confirmModal) ) {
-                this.props.confirmModal();
-              }
-            });
-          }}
-          cancelModal={this.props.disableModal}
+          confirmModal={this.editPost}
           categories={this.props.categories}
+          cancelModal={() => {
+            this.props.disableEditPostModal();
+            this.setState({ isFocused: false });
+          }}
           content={(
             <div className="modal-content">
               <div className="field" key={'post-title'}>
                 <input
-                  ref={input => input && input.focus()}
+                  ref={input => {
+                    if ( input && ! this.state.isFocused ) {
+                      input.focus();
+                    }
+                  }}
                   name={'post-title'}
                   placeholder={'Post Title'}
                   title={'Post Title'}
+                  value={this.state.title}
+                  onChange={e => this.updateField(e, 'title')}
                 />
               </div>
               <div className="field" key={'post-body'}>
@@ -98,6 +118,8 @@ class ModalEditPost extends React.Component {
                   name={'post-body'}
                   placeholder={'Post Body'}
                   title={'Post Body'}
+                  value={this.state.body}
+                  onChange={e => this.updateField(e, 'body')}
                 >
                 </textarea>
               </div>
@@ -111,13 +133,17 @@ class ModalEditPost extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    categories: state.categories
+    categories: state.categories,
+    isActive: state.modals.editPost,
+    activePost: state.activePost
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    editPost: (postId, postOptions) => dispatch(editPost(postId, postOptions))
+    editPost: (postId, postOptions) => dispatch(editPost(postId, postOptions)),
+    disableEditPostModal: () => dispatch(disableEditPostModal()),
+    updateActivePost: post => dispatch(updateActivePost(post))
   };
 };
 

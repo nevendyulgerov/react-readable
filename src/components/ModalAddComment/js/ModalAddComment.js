@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/ModalAddComment.css';
+import Modal from '../../Modal';
 
 class ModalAddComment extends React.Component {
   render() {

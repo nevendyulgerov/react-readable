@@ -9,8 +9,7 @@ import PostSingle from '../../PostSingle';
 import { connect } from 'react-redux';
 import { addPosts, addCategories } from '../../../store/actions';
 import { BrowserRouter } from 'react-router-dom';
-import {getCachedItem, persistentStorage} from '../../../store';
-import slickNote from '../../../common/libs/slick-note';
+import {persistentStore} from '../../../store';
 import ModalAddPost from '../../ModalAddPost';
 import ModalEditPost from '../../ModalEditPost';
 import ModalAddComment from '../../ModalAddComment';
@@ -20,15 +19,14 @@ class App extends Component {
     isAddPostModalActive: false,
     isEditPostModalActive: false,
     isAddCommentModalActive: false,
-    postForEdit: {},
     commentForEdit: {}
   };
 
   componentDidMount() {
 
     // retrieve cached posts and categories
-    const cachedPosts = persistentStorage.getItem('posts');
-    const cachedCategories = persistentStorage.getItem('categories');
+    const cachedPosts = persistentStore.getItem('posts');
+    const cachedCategories = persistentStore.getItem('categories');
 
     // sequence:
     // - get posts (default source: localStorage)
@@ -77,117 +75,45 @@ class App extends Component {
       .execute();
   }
 
-  setEditablePost = (postId, callback) => {
-    const cachedPost = getCachedItem('posts', 'id', postId);
-
-    if ( cachedPost ) {
-
-      // local state update using cached data
-      return this.setState({
-        postForEdit: cachedPost,
-        isEditPostModalActive: true
-      }, () => {
-        if ( ammo.isFunc(callback) ) {
-          callback(cachedPost);
-        }
-      });
-    }
-
-    // alternatively, get post data from the server
-    api.getPost(postId, (err, post) => {
-      if ( err ) {
-        return slickNote.init({
-          type: 'error',
-          title: 'Error',
-          content: `Unable to retrieve data for post with id ${postId}`
-        });
-      }
-
-      // local state update using server data
-      this.setState({
-        postForEdit: post,
-        isEditPostModalActive: true
-      }, () => {
-        if ( ammo.isFunc(callback) ) {
-          callback(post);
-        }
-      });
-    });
-  };
-
   render() {
     return (
       <BrowserRouter>
         <div className="component app">
 
+          {/* navigation */}
           <Navigation
             pollInterval={300}
             categories={this.props.categories}
-            activateAddPostModal={() => this.setState({ isAddPostModalActive: true })}
           />
 
-          {/* view: root */}
+          {/* root view */}
           <Route exact path={'/'} render={() => (
             <div className="view root">
-              <Grid
-                posts={this.props.posts}
-                setEditablePost={this.setEditablePost}
-              />
+              <Grid posts={this.props.posts}/>
             </div>
           )}/>
 
-          {/* view: category */}
+          {/* category view */}
           <Route exact path={'/:category'} render={() => (
             <div className="view category">
               <Grid
                 posts={this.props.posts}
                 category={this.props.activeCategory}
-                setEditablePost={this.setEditablePost}
               />
             </div>
           )}/>
 
-          {/* view: post */}
+          {/* post view */}
           <Route exact path={'/:category/:post_id'} render={() => (
             <div className="view single-post">
-              <PostSingle
-                post={this.state.postForEdit}
-                setEditablePost={this.setEditablePost}
-              />
+              <PostSingle post={this.props.activePost}/>
             </div>
           )}/>
 
-          {/* view: add post */}
-          <ModalAddPost
-            isActive={this.state.isAddPostModalActive}
-            cancelModal={() => this.setState({ isAddPostModalActive: false })}
-            disableModal={() => this.setState({ isAddPostModalActive: false })}
-          />
-
-          {/* view: edit post */}
-          <ModalEditPost
-            post={this.state.postForEdit}
-            isActive={this.state.isEditPostModalActive}
-            confirmModal={() => {
-              this.setEditablePost(this.state.postForEdit.id);
-              this.setState({ isEditPostModalActive: false });
-            }}
-            cancelModal={() => this.setState({ isEditPostModalActive: false })}
-            disableModal={() => this.setState({ isEditPostModalActive: false })}
-          />
-
-          {/* view: edit comment */}
-          <ModalAddComment
-            comment={this.state.commentForEdit}
-            isActive={this.state.isAddCommentModalActive}
-            confirmModal={() => {
-              // this.setEditableComment(this.state.commentForEdit.id);
-              console.log('confirm modal');
-            }}
-            cancelModal={() => this.setState({ isAddCommentModalActive: false })}
-            disableModal={() => this.setState({ isAddCommentModalActive: false })}
-          />
-
+          {/* modals */}
+          <ModalAddPost/>
+          <ModalEditPost/>
+          <ModalAddComment/>
         </div>
       </BrowserRouter>
     );
@@ -198,7 +124,8 @@ const mapStateToProps = state => {
   return {
     posts: state.posts,
     categories: state.categories,
-    activeCategory: state.activeCategory
+    activeCategory: state.activeCategory,
+    activePost: state.activePost
   };
 };
 

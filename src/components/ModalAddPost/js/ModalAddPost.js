@@ -1,19 +1,26 @@
 import React from 'react';
 import Modal from '../../Modal';
-import ammo from '../../../common/libs/ammo';
 import slickNote from '../../../common/libs/slick-note';
 import { connect } from 'react-redux'
-import { addPosts } from '../../../store/actions';
+import { addPosts, disableAddPostModal } from '../../../store/actions';
 import api from '../../../common/api';
+const stateSchema = {
+  title: '',
+  body: '',
+  author: '',
+  category: '',
+  isFocused: false
+};
 
 class ModalAddPost extends React.Component {
+  state = Object.assign({}, stateSchema);
 
   validateModal = () => {
-    const postTitle = ammo.select('[name="post-title"]').get().value.trim();
-    const postBody = ammo.select('[name="post-body"]').get().value.trim();
-    const postAuthor = ammo.select('[name="post-author"]').get().value.trim();
+    const title = this.state.title.trim();
+    const body = this.state.body.trim();
+    const author = this.state.author.trim();
 
-    if ( ! postTitle || postTitle === '' || postTitle.length < 5 || postTitle.length > 100 ) {
+    if ( ! title || title === '' || title.length < 5 || title.length > 100 ) {
       slickNote.init({
         type: 'error',
         title: 'Invalid post title',
@@ -22,7 +29,7 @@ class ModalAddPost extends React.Component {
       return false;
     }
 
-    if ( ! postBody || postBody === '' || postBody.length < 10 || postBody.length > 200 ) {
+    if ( ! body || body === '' || body.length < 10 || body.length > 200 ) {
       slickNote.init({
         type: 'error',
         title: 'Invalid post body',
@@ -31,7 +38,7 @@ class ModalAddPost extends React.Component {
       return false;
     }
 
-    if ( ! postAuthor || postAuthor === '' || postAuthor.length < 3 || postAuthor.length > 100 ) {
+    if ( ! author || author === '' || author.length < 3 || author.length > 100 ) {
       slickNote.init({
         type: 'error',
         title: 'Invalid post author',
@@ -43,11 +50,12 @@ class ModalAddPost extends React.Component {
   };
 
   addPost = () => {
-    const title = ammo.select('[name="post-title"]').get().value.trim();
-    const body = ammo.select('[name="post-body"]').get().value.trim();
-    const author = ammo.select('[name="post-author"]').get().value.trim();
-    const category = ammo.select('[name="post-category"]').get().value.trim();
+    const title = this.state.title.trim();
+    const body = this.state.body.trim();
+    const author = this.state.author.trim();
+    const category = this.state.category.trim();
 
+    // add post to the server data
     api.addPost({ title, body, author, category }, (err, post) => {
       if ( err ) {
         return slickNote.init({
@@ -57,18 +65,27 @@ class ModalAddPost extends React.Component {
         });
       }
 
+      // nullify local state
+      this.setState(Object.assign({}, stateSchema));
+
       // update global state
       this.props.addPost(post);
+      this.props.disableAddPostModal();
 
       slickNote.init({
         type: 'success',
         title: 'New post added',
         content: 'Your post was added successfully.'
       });
-
-      this.props.disableModal();
     });
   };
+
+  updateField(event, field) {
+    this.setState({
+      isFocused: true,
+      [field]: event.target.value
+    });
+  }
 
   render() {
     return (
@@ -79,24 +96,57 @@ class ModalAddPost extends React.Component {
           isActive={this.props.isActive}
           beforeConfirm={this.validateModal}
           confirmModal={this.addPost}
-          cancelModal={this.props.cancelModal}
+          cancelModal={() => {
+            this.props.disableAddPostModal();
+            this.setState({ isFocused: false });
+          }}
           categories={this.props.categories}
           content={(
             <div className="modal-content">
               <div className="field">
-                <input ref={input => input && input.focus()} name={'post-title'} placeholder={'Post Title'} title={'Post Title'}/>
+                <input
+                  ref={input => {
+                    if ( input && ! this.state.isFocused ) {
+                      input.focus();
+                    }
+                  }}
+                  name={'post-title'}
+                  placeholder={'Post Title'}
+                  title={'Post Title'}
+                  value={this.state.title}
+                  onChange={e => this.updateField(e, 'title')}
+                />
               </div>
               <div className="field">
-                <textarea name={'post-body'} placeholder={'Post Body'} title={'Post Body'}>
+                <textarea
+                  name={'post-body'}
+                  placeholder={'Post Body'}
+                  title={'Post Body'}
+                  value={this.state.body}
+                  onChange={e => this.updateField(e, 'body')}
+                >
                 </textarea>
               </div>
               <div className="field">
-                <input name={'post-author'} placeholder={'Post Author'} title={'Post Author'}/>
+                <input
+                  name={'post-author'}
+                  placeholder={'Post Author'}
+                  title={'Post Author'}
+                  value={this.state.author}
+                  onChange={e => this.updateField(e, 'author')}
+                />
               </div>
               <div className="field">
-                <select name={'post-category'} title={'Post Category'}>
-                  {this.props.categories.map(category => (
-                    <option value={category.name} key={category.name}>{category.name}</option>
+                <select
+                  name={'post-category'}
+                  title={'Post Category'}
+                  onChange={e => this.updateField(e, 'category')}
+                >{this.props.categories.map((category, index) => (
+                    <option
+                      value={category.name}
+                      key={category.name}
+                      defaultValue={index === 0}
+                    >{category.name}</option>
                   ))}
                 </select>
               </div>
@@ -110,13 +160,15 @@ class ModalAddPost extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    categories: state.categories
+    categories: state.categories,
+    isActive: state.modals.addPost
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addPost: post => dispatch(addPosts([post]))
+    addPost: post => dispatch(addPosts([post])),
+    disableAddPostModal: () => dispatch(disableAddPostModal())
   };
 };
 
