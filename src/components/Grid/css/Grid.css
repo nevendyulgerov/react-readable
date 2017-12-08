@@ -1,0 +1,61 @@
+
+/**
+ * Styles for component Grid
+ */
+
+.component.grid {
+  width: 1240px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.component.grid .masonry-grid {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px 0 0 0;
+}
+
+.component.grid .masonry-grid .grid-item {
+  background-color: #fff;
+  margin: 0 10px 10px 0;
+  width: calc(33.33% - 20px);
+  min-width: 240px;
+  flex-basis: calc(33.33% - 20px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.16),0 1px 1px 0 rgba(239,239,239,0.12);
+  transition: box-shadow 0.3s;
+}
+
+.component.grid .masonry-grid .grid-item:hover {
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  transition: box-shadow 0.3s;
+}
+
+/** fullscreen **/
+@media (max-width: 1240px) {
+  .component.grid .masonry-grid {
+    padding: 0;
+    margin: 0 10px 10px 10px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .component.grid .masonry-grid .grid-item {
+    width: calc(50% - 10px);
+    flex-basis: calc(50% - 10px);
+  }
+}
+
+/** mobile screens **/
+@media (max-width: 640px) {
+  .component.grid .masonry-grid .grid-item {
+    margin: 0 0 10px 0;
+    width: 100%;
+    flex-basis: 100%;
+  }
+}
