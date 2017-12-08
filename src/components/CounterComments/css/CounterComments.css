@@ -17,6 +17,10 @@
   color: #f39c12 !important;
 }
 
+.component.counter-comments.positive .count {
+  color: #f39c12 !important;
+}
+
 .component.counter-comments .icon {
   color: #bfbfbf !important;
 }
@@ -24,7 +28,7 @@
 .component.counter-comments .count {
   margin: 0 2px 0 0;
   font-size: 16px;
-  color: #f39c12;
+  color: #bfbfbf;
 }
 
 .component.counter-comments .icon {
