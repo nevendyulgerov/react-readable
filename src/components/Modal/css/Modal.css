@@ -1,0 +1,172 @@
+
+/**
+ * Styles for component Modal
+ */
+
+.modal-overlay {
+  pointer-events: all;
+  opacity: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  background-color: rgba(0,0,0,0.5);
+  transition: all 0.3s;
+}
+
+.component.modal {
+  display: none;
+  opacity: 0;
+  position: fixed;
+  top: 15%;
+  left: 0;
+  right: 0;
+  max-height: 100%;
+  margin: 0 auto;
+  z-index: 100;
+  width: 40%;
+  background-color: #eeeeee;
+  color: #444444;
+  pointer-events: none;
+  overflow: auto;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: all 0.3s ease-in-out;
+}
+.component.modal.active {
+  display: block;
+  opacity: 1;
+  pointer-events: all;
+  transition: all 0.3s ease-in-out;
+}
+
+.component.modal .modal-header {
+  background-color: #d5d6d2;
+  padding: 0 5px;
+}
+
+.component.modal .modal-header h2 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #353c3f;
+  text-align:left;
+  margin: 0;
+  padding: 6px;
+}
+
+.component.modal .modal-body {
+  padding: 10px;
+  overflow-x: hidden;
+}
+
+.component.modal .modal-body .modal-content {
+  padding: 5px 0 40px 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.component.modal .modal-body .modal-content .field {
+  padding: 0 5px 10px 5px;
+}
+
+.component.modal .modal-body .modal-content .field:last-child {
+  padding: 0;
+}
+
+.component.modal .modal-body .modal-content .field input,
+.component.modal .modal-body .modal-content .field textarea,
+.component.modal .modal-body .modal-content .field select {
+  border: none;
+  padding: 10px;
+  width: calc(100% - 20px);
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.12),0 1px 1px 0 rgba(239,239,239,0.6);
+  transition: all 0.15s ease-in-out;
+}
+
+.component.modal .modal-body .modal-content .field input:focus,
+.component.modal .modal-body .modal-content .field textarea:focus,
+.component.modal .modal-body .modal-content .field select:focus {
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  border: none;
+  outline: none;
+  transition: all 0.15s ease-in-out;
+}
+
+.component.modal .modal-body .modal-content .field textarea {
+  display: inherit;
+  resize: vertical;
+  min-height: 60px;
+  max-width: calc(100% - 10px);
+  height: 60px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: 14px;
+  margin: 0 auto;
+  max-height: 120px;
+  font-family: 'Lato', sans-serif;
+}
+
+.component.modal .modal-body .modal-content .field select {
+  display: inherit;
+  width: calc(100% - 10px);
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px 6px;
+  color: #444;
+}
+
+.component.modal .modal-body .modal-content .field select option {
+  padding: 10px;
+}
+
+.component.modal .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.component.modal .modal-footer button {
+  display: inline-block;
+  border: none;
+  width: 50%;
+  font-size: 18px;
+  text-align: center;
+  padding: 6px 0;
+  text-decoration: none;
+  transition: all 0.15s ease-in-out;
+}
+.component.modal .modal-footer button:hover {
+  opacity: 0.8;
+  transition: all 0.15s ease-in-out;
+}
+
+.component.modal .modal-footer .cancel {
+  color: white;
+  background-color: #d35c37;
+}
+
+.component.modal .modal-footer .confirm {
+  color: white;
+  background-color: #6fb98f;
+}
+
+@media screen and (max-width: 1024px) {
+  .component.modal {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 786px) {
+  .component.modal {
+    width: 85%;
+  }
+}
+
+@media (max-width: 420px) {
+  .component.modal {
+    width: 100%;
+    top: 50px;
+    height: calc(100% - 50px);
+  }
+}
