@@ -9,16 +9,19 @@ import PostSingle from '../../PostSingle';
 import { connect } from 'react-redux';
 import { addPosts, addCategories } from '../../../store/actions';
 import { BrowserRouter } from 'react-router-dom';
-import ModalAddPost from '../../ModalAddPost';
 import {getCachedItem, persistentStorage} from '../../../store';
-import ModalEditPost from '../../ModalEditPost';
 import slickNote from '../../../common/libs/slick-note';
+import ModalAddPost from '../../ModalAddPost';
+import ModalEditPost from '../../ModalEditPost';
+import ModalAddComment from '../../ModalAddComment';
 
 class App extends Component {
   state = {
     isAddPostModalActive: false,
     isEditPostModalActive: false,
-    postForEdit: {}
+    isAddCommentModalActive: false,
+    postForEdit: {},
+    commentForEdit: {}
   };
 
   componentDidMount() {
@@ -154,14 +157,14 @@ class App extends Component {
             </div>
           )}/>
 
-          {/* view: add-post */}
+          {/* view: add post */}
           <ModalAddPost
             isActive={this.state.isAddPostModalActive}
             cancelModal={() => this.setState({ isAddPostModalActive: false })}
             disableModal={() => this.setState({ isAddPostModalActive: false })}
           />
 
-          {/* view: edit-post */}
+          {/* view: edit post */}
           <ModalEditPost
             post={this.state.postForEdit}
             isActive={this.state.isEditPostModalActive}
@@ -171,6 +174,18 @@ class App extends Component {
             }}
             cancelModal={() => this.setState({ isEditPostModalActive: false })}
             disableModal={() => this.setState({ isEditPostModalActive: false })}
+          />
+
+          {/* view: edit comment */}
+          <ModalAddComment
+            comment={this.state.commentForEdit}
+            isActive={this.state.isAddCommentModalActive}
+            confirmModal={() => {
+              // this.setEditableComment(this.state.commentForEdit.id);
+              console.log('confirm modal');
+            }}
+            cancelModal={() => this.setState({ isAddCommentModalActive: false })}
+            disableModal={() => this.setState({ isAddCommentModalActive: false })}
           />
 
         </div>
