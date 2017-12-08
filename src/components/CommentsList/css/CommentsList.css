@@ -1,0 +1,40 @@
+
+/**
+ * Styles for component CommentsSlider
+ */
+
+.component.comments-list {
+  position: absolute;
+  top: 100% !important;
+  width: 100%;
+  min-width: 300px;
+  left: 0;
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  background-color: rgba(149, 165, 166, 1);
+  box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.component.comments-list.active {
+  display: block;
+  opacity: 1;
+  z-index: 20;
+  pointer-events: all;
+  top: calc(-100% + 90px);
+}
+
+.component.comments-list .slider-title {
+  text-align: left;
+  padding: 10px;
+  background-color: #d5d6d2;
+}
+
+.component.comments-list .comments-list {
+  list-style-type: none;
+  width: 100%;
+  max-height: 800px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
