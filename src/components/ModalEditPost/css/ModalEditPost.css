@@ -1,0 +1,22 @@
+
+/**
+ * Styles for component ModalEditPost
+ */
+
+.component.edit-post-modal {
+
+}
+
+.component.edit-post-modal .modal-body .modal-content .field textarea {
+  display: inherit;
+  resize: vertical;
+  min-height: 60px;
+  max-width: calc(100% - 30px);
+  height: 60px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: 14px;
+  margin: 0 auto;
+  max-height: 120px;
+  font-family: 'Lato', sans-serif;
+}
