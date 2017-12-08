@@ -1,0 +1,16 @@
+
+/**
+ * Styles for component PostBody
+ */
+
+.component.post-body {
+  white-space: nowrap;
+}
+
+.component.post-body p {
+  line-height: 1.2;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  padding: 5px 5px 10px 10px;
+}
