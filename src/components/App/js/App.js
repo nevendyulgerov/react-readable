@@ -39,7 +39,7 @@ class App extends Component {
 
           // ... global state update from cached data
           this.props.addPosts(cachedPosts);
-          return seq.resolve();
+          return seq.resolve('cache');
         }
 
         // alternatively retrieve posts from the server
@@ -50,8 +50,19 @@ class App extends Component {
 
           // global state update from server data
           this.props.addPosts(posts);
-          seq.resolve();
+          seq.resolve('server');
         });
+      })
+      .chain(seq => {
+
+        // ... if data for posts is being retrieved from server
+        if ( seq.response.value === 'server' ) {
+
+          // ... nullify persistent data for posts and comments
+          persistentStore.setItem('posts', []);
+          persistentStore.setItem('comments', []);
+        }
+        seq.resolve();
       })
       .chain(() => {
 

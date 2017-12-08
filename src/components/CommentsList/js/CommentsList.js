@@ -2,6 +2,7 @@ import React from 'react';
 import api from '../../../common/api';
 import '../css/CommentsList.css';
 import Comment from '../../Comment';
+import { getCachedItems } from '../../../persistent-store';
 
 class CommentsList extends React.Component {
   state = {
@@ -10,10 +11,23 @@ class CommentsList extends React.Component {
 
   syncComments() {
     const post = this.props.post;
+    const cachedComments = getCachedItems('comments', 'parentId', post.id);
+
+    console.log(cachedComments);
+
+    // ... if cached comments exist
+    if ( cachedComments[0] ) {
+
+      // ... set comments data from cache
+      return this.setState({ comments: cachedComments });
+    }
+
+    // alternatively, retrieve comments from the server
     api.getPostComments(post.id, (err, comments) => {
       if ( err ) {
         return console.error(err);
       }
+      // set comments data from server
       this.setState({ comments });
     });
   }

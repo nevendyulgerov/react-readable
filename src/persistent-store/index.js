@@ -7,15 +7,24 @@ import {
   ADD_CATEGORIES,
   UPDATE_ACTIVE_CATEGORY,
   UPDATE_ACTIVE_POST,
-  UPDATE_ACTIVE_COMMENT
+  UPDATE_ACTIVE_COMMENT,
+  ADD_COMMENTS,
+  EDIT_COMMENT,
+  DELETE_COMMENT,
+  UPVOTE_COMMENT,
+  DOWNVOTE_COMMENT
 } from '../store/actions';
 import ammo from '../common/libs/ammo';
 
 export const persistentStore = ammo.store('readable');
 
-export const getCachedItem = (itemKey, key, value) => {
+export const getCachedItems = (itemKey, key, value) => {
   const data = persistentStore.getItem(itemKey);
-  const matches = data.filter(item => item[key] === value);
+  return data.filter(item => item[key] === value);
+};
+
+export const getCachedItem = (itemKey, key, value) => {
+  const matches = getCachedItems(itemKey, key, value);
   return matches[0];
 };
 
@@ -57,6 +66,28 @@ export const persistentStoreInterceptor = store => next => action => {
 
     case UPDATE_ACTIVE_COMMENT:
       persistentStore.setItem('activeComment', action.comment);
+      break;
+
+    case ADD_COMMENTS:
+      const parentId = action.comments[0] ? action.comments[0].parentId : '';
+      persistentStore.setItem('comments', ammo.unique(storeData.comments, action.comments, 'id'));
+      persistentStore.setItem('posts', storeData.posts.map(post => post.id !== parentId ? post : Object.assign({}, post, { commentCount: action.comments.length}) ));
+      break;
+
+    case EDIT_COMMENT:
+      persistentStore.setItem('comments', storeData.comments.map(comment => comment.id !== action.commentId ? comment : Object.assign({}, comment, action.commentOptions)));
+      break;
+
+    case DELETE_COMMENT:
+      persistentStore.setItem('comments', storeData.comments.filter(comment => comment.id !== action.commentId));
+      break;
+
+    case UPVOTE_COMMENT:
+      persistentStore.setItem('comments', storeData.comments.map(comment => comment.id !== action.commentId ? comment : Object.assign({}, comment, { voteScore: comment.voteScore + 1})));
+      break;
+
+    case DOWNVOTE_COMMENT:
+      persistentStore.setItem('comments', storeData.comments.map(comment => comment.id !== action.commentId ? comment : Object.assign({}, comment, { voteScore: comment.voteScore - 1})));
       break;
 
     default:

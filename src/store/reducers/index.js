@@ -19,7 +19,12 @@ import {
   MODAL_ADD_COMMENT_ENABLED,
   MODAL_ADD_COMMENT_DISABLED,
   MODAL_EDIT_COMMENT_ENABLED,
-  MODAL_EDIT_COMMENT_DISABLED
+  MODAL_EDIT_COMMENT_DISABLED,
+  ADD_COMMENTS,
+  EDIT_COMMENT,
+  DELETE_COMMENT,
+  UPVOTE_COMMENT,
+  DOWNVOTE_COMMENT
 } from '../actions';
 
 const initialState = {
@@ -190,6 +195,49 @@ const modals = (state = initialState.modals, action) => {
   }
 };
 
+/**
+ * @description Comments reducer
+ * @param state
+ * @param action
+ * @returns {Array}
+ */
+const comments = (state = [], action) => {
+  switch ( action.type ) {
+    case ADD_COMMENTS:
+      return ammo.unique(state, action.comments, 'id');
+
+    case EDIT_COMMENT:
+      return state.map(comment => {
+        if ( comment.id === action.commentId ) {
+          return Object.assign({}, comment, action.commentOptions);
+        }
+        return comment;
+      });
+
+    case DELETE_COMMENT:
+      return state.filter(comment => comment.id !== action.commentId);
+
+    case UPVOTE_COMMENT:
+      return state.map(comment => {
+        if ( comment.id === action.commentId ) {
+          return Object.assign({}, comment, { voteScore: comment.voteScore + 1 });
+        }
+        return comment;
+      });
+
+    case DOWNVOTE_COMMENT:
+      return state.map(comment => {
+        if ( comment.id === action.commentId ) {
+          return Object.assign({}, comment, { voteScore: comment.voteScore - 1 });
+        }
+        return comment;
+      });
+
+    default:
+      return state;
+  }
+};
+
 
 export default reduceReducers(
   combineReducers({
@@ -198,7 +246,8 @@ export default reduceReducers(
     activeCategory,
     activePost,
     activeComment,
-    modals
+    modals,
+    comments
   }),
   localStore
 );

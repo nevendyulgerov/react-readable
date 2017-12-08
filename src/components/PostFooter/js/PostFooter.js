@@ -3,7 +3,7 @@ import '../css/PostFooter.css';
 import ammo from '../../../common/libs/ammo';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updateActiveCategory, updateActivePost, enableEditPostModal } from '../../../store/actions';
+import { updateActiveCategory, updateActivePost, enableEditPostModal, enableAddCommentModal } from '../../../store/actions';
 import OptionsPanel from '../../OptionsPanel';
 import CounterVoteScore from '../../CounterVoteScore';
 import CounterComments from '../../CounterComments';
@@ -35,7 +35,10 @@ class PostFooter extends React.Component {
 
         <OptionsPanel
           type={'post'}
-          onComment={() => this.props.addComment(post.id)}
+          onAddComment={() => {
+            this.props.updateActivePost(post);
+            this.props.enableAddCommentModal();
+          }}
           onUpvote={() => this.props.upvotePost(post.id)}
           onDownvote={() => this.props.downvotePost(post.id)}
           onEdit={() => {
@@ -69,7 +72,8 @@ const mapDispatchToProps = dispatch => {
   return {
     updateActiveCategory: category => dispatch(updateActiveCategory(category)),
     updateActivePost: post => dispatch(updateActivePost(post)),
-    enableEditPostModal: () => dispatch(enableEditPostModal())
+    enableEditPostModal: () => dispatch(enableEditPostModal()),
+    enableAddCommentModal: () => dispatch(enableAddCommentModal())
   };
 };
 

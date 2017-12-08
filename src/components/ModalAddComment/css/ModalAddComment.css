@@ -3,6 +3,10 @@
  * Styles for component ModalAddComment
  */
 
-.component.add-comment-modal {
+.component.add-comment-modal .modal-content {
+  padding: 0 0 30px 0 !important;
+}
 
+.component.add-comment-modal .field:last-child {
+  padding: 0 5px 10px 5px !important;
 }

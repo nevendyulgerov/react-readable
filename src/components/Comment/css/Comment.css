@@ -67,7 +67,7 @@
   justify-content: flex-end;
   overflow: hidden;
   padding: 0 10px;
-  background: linear-gradient(to right, rgba(149, 165, 166, 0.75) 50%, #efefef 100%);;
+  background: linear-gradient(to right, rgba(149, 165, 166, 0.75) 50%, rgba(239, 239, 239, 0.75) 100%);;
 }
 
 .component.comment .comment-footer .trigger.edit {

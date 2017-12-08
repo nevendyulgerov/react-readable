@@ -10,7 +10,7 @@ import CommentsList from '../../CommentsList';
 
 class PostPanel extends React.Component {
   state = {
-    isCommentsSliderActive: false
+    isCommentsListActive: false
   };
 
   deletePost = postId => {
@@ -26,11 +26,7 @@ class PostPanel extends React.Component {
   };
 
   toggleComments = () => {
-    this.setState({ isCommentsSliderActive: ! this.state.isCommentsSliderActive });
-  };
-
-  addComment = () => {
-    console.log(this.props.post);
+    this.setState({ isCommentsListActive: ! this.state.isCommentsListActive });
   };
 
   render() {
@@ -41,27 +37,28 @@ class PostPanel extends React.Component {
         data-id={post.id}
         className={`component post post-panel ${this.props.isFullscreen ? 'fullscreen' : ''}`}
       >
+
         <PostHeader
           post={post}
           isSinglePage={false}
         />
+
         <PostBody
           post={post}
           isSinglePage={false}
         />
+
         <PostFooter
           post={post}
           upvotePost={this.upvotePost}
           downvotePost={this.downvotePost}
           deletePost={this.deletePost}
-          setEditablePost={this.props.setEditablePost}
-          setEditableComment={this.props.setEditableComment}
           toggleComments={this.toggleComments}
         />
 
         <CommentsList
           post={post}
-          isActive={this.state.isCommentsSliderActive}
+          isActive={this.state.isCommentsListActive}
         />
       </article>
     );

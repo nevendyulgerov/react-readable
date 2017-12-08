@@ -69,7 +69,7 @@ class Grid extends React.Component {
           )) : category && (
             <Notification
               type={'info'}
-              text={'No results found. Please try a different category'}
+              text={'No results found. Please try a different category.'}
               buttonUrl={'/'}
               buttonText={'Go to homepage'}
             />

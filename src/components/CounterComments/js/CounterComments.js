@@ -4,7 +4,7 @@ import FaComment from 'react-icons/lib/fa/comment';
 
 const CounterComments = props => {
   const count = props.count;
-  const isPositive = count > 0;
+  const isPositive = count >= 0;
 
   return (
     <div className={`component counter-comments ${isPositive ? 'positive' : ''}`}>

@@ -15,8 +15,8 @@ const OptionsPanel = props => {
 
       {type === 'post' && (
         <button className="trigger comment" title={`Add comment`} onClick={() => {
-          if ( ammo.isFunc(props.onComment) ) {
-            props.onComment();
+          if ( ammo.isFunc(props.onAddComment) ) {
+            props.onAddComment();
           }
         }}>
           <span className="icon"><FaCommenting/></span>

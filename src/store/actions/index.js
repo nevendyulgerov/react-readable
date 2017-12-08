@@ -10,7 +10,7 @@ export const UPDATE_ACTIVE_POST = 'UPDATE_ACTIVE_POST';
 export const ADD_CATEGORIES = 'ADD_CATEGORIES';
 export const UPDATE_ACTIVE_CATEGORY = 'UPDATE_ACTIVE_CATEGORY';
 
-export const ADD_COMMENT = 'ADD_COMMENT';
+export const ADD_COMMENTS = 'ADD_COMMENTS';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const UPVOTE_COMMENT = 'UPVOTE_COMMENT';
@@ -221,11 +221,73 @@ export const enableEditCommentModal = () => {
 };
 
 /**
- * @description Disable edit comment modal
+ * @description Disable edit comment modal action
  * @returns {{type: string}}
  */
 export const disableEditCommentModal = () => {
   return {
     type: MODAL_EDIT_COMMENT_DISABLED
+  };
+};
+
+/**
+ * @description Add comments action
+ * @param comments
+ * @returns {{type: string, comments: *}}
+ */
+export const addComments = comments => {
+  return {
+    type: ADD_COMMENTS,
+    comments
+  };
+};
+
+/**
+ * @description Edit post action
+ * @param commentId
+ * @param commentOptions
+ * @returns {{type: string, commentId: *, commentOptions: *}}
+ */
+export const editComment = (commentId, commentOptions) => {
+  return {
+    type: EDIT_COMMENT,
+    commentId,
+    commentOptions
+  };
+};
+
+/**
+ * @description Upvote post action
+ * @param commentId
+ * @returns {{type: string, commentId: *}}
+ */
+export const upvoteComment = commentId => {
+  return {
+    type: UPVOTE_COMMENT,
+    commentId
+  };
+};
+
+/**
+ * @description Downvote post action
+ * @param commentId
+ * @returns {{type: string, commentId: *}}
+ */
+export const downvoteComment = commentId => {
+  return {
+    type: DOWNVOTE_COMMENT,
+    commentId
+  };
+};
+
+/**
+ * @description Delete post action
+ * @param commentId
+ * @returns {{type: string, commentId: *}}
+ */
+export const deleteComment = commentId => {
+  return {
+    type: DELETE_COMMENT,
+    commentId
   };
 };
