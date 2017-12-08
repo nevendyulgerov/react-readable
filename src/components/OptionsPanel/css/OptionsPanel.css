@@ -1,0 +1,42 @@
+
+/**
+ * Styles for component OptionsPanel
+ */
+
+.component.options-panel {
+  position: relative;
+  top: 0;
+  transition: all 0.15s ease-in-out;
+  margin: 0 20px 0 0;
+}
+
+.component.options-panel .trigger {
+  color: #97b8c3;
+  font-size: 22px;
+  background-color: transparent;
+  font-weight: 100;
+}
+
+.component.options-panel .trigger.like {
+  color: #16A085;
+}
+
+.component.options-panel .trigger.dislike {
+  color: #d35c37;
+}
+
+.component.options-panel .trigger.edit {
+  color: #97b8c3;
+  font-size: 18px;
+  background-color: transparent;
+  font-weight: 100;
+}
+
+.component.options-panel .trigger.delete {
+  font-size: 18px;
+  color: #d35c37;
+  background-color: transparent;
+  position: relative;
+  bottom: 1px;
+  font-weight: 100;
+}
