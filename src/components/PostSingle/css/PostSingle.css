@@ -1,0 +1,60 @@
+
+/**
+ * Styles for component SinglePost
+ */
+
+.component.single-post {
+  position: relative;
+  width: 1240px;
+  min-width: 300px;
+  max-width: 100%;
+  margin: 20px auto 0 auto;
+  opacity: 0;
+  pointer-events: none;
+  background-color: #fff;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.component.single-post.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.component.single-post .component.post-footer .component.options-panel {
+  opacity: 0;
+  pointer-events: all;
+}
+
+.component.single-post:hover .component.post-footer .component.options-panel {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.component.single-post .component.comments-slider .comment .component.options-panel {
+  opacity: 0;
+  pointer-events: all;
+}
+
+.component.single-post .component.comments-slider .comment:hover .component.options-panel {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/** overwrite child component styles **/
+.component.single-post .component.comment .component.options-panel {
+  position: relative;
+  top: -1px;
+}
+
+.component.single-post .component.comment .counter-vote-score {
+  position: relative;
+  top: -1px;
+}
+
+/** fullscreen **/
+@media (max-width: 1240px) {
+
+  .component.single-post {
+    width: calc(100% - 20px);
+  }
+}
