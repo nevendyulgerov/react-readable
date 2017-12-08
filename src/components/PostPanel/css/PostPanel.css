@@ -1,0 +1,40 @@
+
+/**
+ * Styles for component PostPanel
+ */
+
+.component.post-panel {
+  width: 100%;
+}
+
+/** overwrite child component styles **/
+.component.post-panel .component.post-footer .component.options-panel {
+  opacity: 0;
+  pointer-events: all;
+}
+
+.component.post-panel:hover .component.post-footer .component.options-panel {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.component.post-panel .component.comments-slider .comment .component.options-panel {
+  opacity: 0;
+  pointer-events: all;
+}
+
+.component.post-panel .component.comments-slider .comment:hover .component.options-panel {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/** overwrite child component styles **/
+.component.post-panel .component.comment .component.options-panel {
+  position: relative;
+  top: -1px;
+}
+
+.component.post-panel .component.comment .counter-vote-score {
+  position: relative;
+  top: -1px;
+}
