@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
+
+/**
+ Color Scheme: Retro & Relaxing
+ ginger: #d35c37
+ hazelnut: #bf9a77
+ oat: #d6c6b9
+ sky: #97b8c3
+ pea: #919636
+ grey: #d5d6d2
+ charcoal: #353c3f
+ */
+
+body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+  background-color: #d5d6d2;
+  color: #353c3f;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+a:active {
+  color: inherit;
+  border: none;
+}
+
+a:focus {
+  color: inherit;
+  border: none;
+}
+
+a:visited {
+  color: inherit;
+  border: none;
+}
+
+p {
+  margin: 0;
+}
+
+::selection {
+  background-color: rgba(152, 219, 198, 0.5);
+}
+
+button {
+  border: none;
+  outline: none;
+  font-family: 'Lato', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+button:active {
+  border: none;
+  transition: all 0.15s ease-in-out;
+}
+
+button:focus {
+  border: none;
+  opacity: 0.65;
+  transition: all 0.15s ease-in-out;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
