@@ -1,0 +1,92 @@
+
+/**
+ * Styles for component Comment
+ */
+
+.component.comment {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: left;
+  border-top: 1px solid #d5d6d2;
+  overflow: hidden;
+}
+
+.component.comment .comment-header {
+  width: calc(100% - 20px);
+  text-align: left;
+  overflow: auto;
+  padding: 10px 10px 0 10px;
+}
+
+.component.comment .comment-header .comment-meta {
+  width: 100%;
+  text-align: left;
+  overflow: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.component.comment .comment-header .comment-title {
+  display: flex;
+  padding: 20px 0 20px 20px;
+}
+
+.component.comment .comment-header .comment-date {
+  z-index: 10;
+  color: #d5d6d2;
+  pointer-events: none;
+  text-shadow: 2px 1px 1px rgba(0,0,0,0.3);
+}
+
+.component.comment .comment-header .comment-author {
+  z-index: 5;
+  color: #d5d6d2;
+  text-shadow: 2px 1px 1px rgba(0,0,0,0.3);
+}
+
+.component.comment .comment-body {
+  text-align: left;
+  font-weight: 300;
+  line-height: 1.2;
+  font-size: 16px;
+  color: #fff;
+  z-index: 10;
+  padding: 10px;
+  text-shadow: 2px 1px 1px rgba(0,0,0,0.3);
+}
+
+.component.comment .comment-body .comment-content {
+  text-align: left;
+}
+
+.component.comment .comment-footer {
+  width: calc(100% - 20px);
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 0 10px;
+  background: linear-gradient(to right, rgba(149, 165, 166, 0.75) 50%, #efefef 100%);;
+}
+
+.component.comment .comment-footer .trigger.edit {
+  color: #444 !important;
+}
+
+/** overwrite child component styles **/
+.component.comment .component.options-panel {
+  top: -3px !important;
+}
+
+.component.comment .component.counter-vote-score {
+  top: 0 !important;
+}
+
+.component.comment .component.options-panel {
+  opacity: 0;
+}
+
+.component.comment:hover .component.options-panel {
+  opacity: 1;
+}
