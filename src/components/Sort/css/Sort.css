@@ -1,0 +1,67 @@
+
+/**
+ * Styles for component Sort
+ */
+
+.component.sort {
+  width: 1240px;
+  min-width: 260px;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow-x: hidden;
+  padding: 20px 5px 5px 0;
+}
+
+.component.sort .sort-by {
+  position: relative;
+  overflow-y: visible;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 10px 15px;
+  align-items: flex-start;
+  justify-content: space-between;
+  background-color: #bf9a77;
+  margin: 0 10px 0 0;
+  box-shadow: 0 2px 1px 0 rgba(0,0,0,0.12), 0 1px 1px 0 rgba(239,239,239,0.6);
+}
+
+.component.sort .sort-by:last-child {
+  margin: 0;
+}
+
+.component.sort .sort-by select {
+  padding: 2px;
+  margin: 0;
+  border: none;
+  background-color: #d5d6d2;
+  box-shadow: 0 2px 1px 0 rgba(0,0,0,0.12), 0 1px 1px 0 rgba(239,239,239,0.6);
+}
+
+.component.sort .sort-by select:focus {
+  border: none;
+  outline: none;
+}
+
+.component.sort .sort-by .label {
+  margin: 0 5px 0 0;
+  color: #d5d6d2;
+}
+
+/** fullscreen **/
+@media (max-width: 1240px) {
+
+  .component.sort {
+    padding: 10px;
+  }
+}
+
+/** mobile screens **/
+@media (max-width: 640px) {
+
+  .component.sort .sort-by {
+    display: flex;
+    width: calc(100% - 50px);
+    margin: 0 0 10px 0;
+  }
+}
