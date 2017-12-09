@@ -10,6 +10,8 @@
  */
 
 
+import ammo from "../index";
+
 /**
  * @description Provide DOM context
  * Contx
@@ -785,6 +787,12 @@ export const unique = (arrA, arrB, prop) => {
     return accumulator;
   }, uniqueA);
 };
+
+/**
+ * @description Get url parts
+ * @returns {string[]}
+ */
+export const getUrlParts = () => window.location.pathname.split('/').filter(item => ammo.isStr(item) && item !== '');
 
 
 /**
