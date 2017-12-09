@@ -13,6 +13,7 @@ import {persistentStore} from '../../../store';
 import ModalAddPost from '../../ModalAddPost';
 import ModalEditPost from '../../ModalEditPost';
 import ModalAddComment from '../../ModalAddComment';
+import Breadcrumbs from '../../Breadcrumbs';
 
 class App extends Component {
   state = {
@@ -37,7 +38,7 @@ class App extends Component {
         // ... if cached posts exist
         if ( cachedPosts[0] ) {
 
-          // ... global state update from cached data
+          // ... update global state for 'posts' with cached data
           this.props.addPosts(cachedPosts);
           return seq.resolve('cache');
         }
@@ -48,12 +49,14 @@ class App extends Component {
             return console.error(err);
           }
 
-          // global state update from server data
+          // update global state for 'posts' with server data
           this.props.addPosts(posts);
           seq.resolve('server');
         });
       })
       .chain(seq => {
+
+        // TODO: Refactor this chain, persistent data should not be modified directly
 
         // ... if data for posts is being retrieved from server
         if ( seq.response.value === 'server' ) {
@@ -95,6 +98,11 @@ class App extends Component {
           <Navigation
             pollInterval={300}
             categories={this.props.categories}
+          />
+
+          <Breadcrumbs
+            pollInterval={300}
+            enableIdToTitleConversion={true}
           />
 
           {/* root view */}
