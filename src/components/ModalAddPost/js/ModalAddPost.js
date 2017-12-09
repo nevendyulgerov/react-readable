@@ -87,6 +87,12 @@ class ModalAddPost extends React.Component {
     });
   }
 
+  componentDidMount() {
+    if ( this.props.categories[0] ) {
+      this.setState({ category: this.props.categories[0].name });
+    }
+  }
+
   render() {
     return (
       <div className="component add-post-modal">
@@ -141,11 +147,10 @@ class ModalAddPost extends React.Component {
                   name={'post-category'}
                   title={'Post Category'}
                   onChange={e => this.updateField(e, 'category')}
-                >{this.props.categories.map((category, index) => (
+                >{this.props.categories.map(category => (
                     <option
                       value={category.name}
                       key={category.name}
-                      defaultValue={index === 0}
                     >{category.name}</option>
                   ))}
                 </select>

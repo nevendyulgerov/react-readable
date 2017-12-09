@@ -26,6 +26,11 @@ export const MODAL_ADD_COMMENT_DISABLED = 'MODAL_ADD_COMMENT_DISABLED';
 export const MODAL_EDIT_COMMENT_ENABLED = 'MODAL_EDIT_COMMENT_ENABLED';
 export const MODAL_EDIT_COMMENT_DISABLED = 'MODAL_EDIT_COMMENT_DISABLED';
 
+export const INCREMENT_COMMENTS_COUNT = 'INCREMENT_COMMENTS_COUNT';
+export const DECREMENT_COMMENTS_COUNT = 'DECREMENT_COMMENTS_COUNT';
+
+export const UPDATE_SORTING = 'UPDATE_SORTING';
+
 
 /**
  * @description Sync local store action
@@ -289,5 +294,43 @@ export const deleteComment = commentId => {
   return {
     type: DELETE_COMMENT,
     commentId
+  };
+};
+
+/**
+ * @description Increment comments count action
+ * @param {string} postId
+ * @returns {{type: string}}
+ */
+export const incrementCommentsCount = postId => {
+  return {
+    type: INCREMENT_COMMENTS_COUNT,
+    postId
+  };
+};
+
+/**
+ * @description Decrement comments count
+ * @param {string} postId
+ * @returns {{type: string}}
+ */
+export const decrementCommentsCount = postId => {
+  return {
+    type: DECREMENT_COMMENTS_COUNT,
+    postId
+  };
+};
+
+/**
+ * @description Update date sorting action
+ * @param sortType
+ * @param sortValue
+ * @returns {{type: string, sortType: *}}
+ */
+export const updateSorting = (sortType, sortValue) => {
+  return {
+    type: UPDATE_SORTING,
+    sortType,
+    sortValue
   };
 };

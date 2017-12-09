@@ -10,6 +10,7 @@ class Comment extends React.Component {
 
     return (
       <div className="component comment">
+
         <div className="comment-header">
           <div className="comment-meta">
             <span className="comment-author" title={'Author'}>{comment.author}</span>
@@ -39,6 +40,7 @@ class Comment extends React.Component {
           />
 
           <CounterVoteScore score={comment.voteScore}/>
+
         </div>
       </div>
     );

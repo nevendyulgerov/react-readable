@@ -24,7 +24,10 @@ import {
   EDIT_COMMENT,
   DELETE_COMMENT,
   UPVOTE_COMMENT,
-  DOWNVOTE_COMMENT
+  DOWNVOTE_COMMENT,
+  INCREMENT_COMMENTS_COUNT,
+  DECREMENT_COMMENTS_COUNT,
+  UPDATE_SORTING
 } from '../actions';
 
 const initialState = {
@@ -37,79 +40,10 @@ const initialState = {
     ediPost: false,
     addComment: false,
     editComment: false
-  }
-};
-
-/**
- * @description Local store reducer
- * @param state
- * @param action
- * @returns {{posts: Array, categories: Array, activeCategory: string, activePost: string}}
- */
-const localStore = (state = initialState, action) => {
-  switch (action.type) {
-    case SYNC_LOCAL_STORE:
-      return action.data;
-    default:
-      return state;
-  }
-};
-
-/**
- * @description Posts reducer
- * @param state
- * @param action
- * @returns {*}
- */
-const posts = (state = [], action) => {
-  switch ( action.type ) {
-    case ADD_POSTS:
-      return ammo.unique(state, action.posts, 'id');
-
-    case EDIT_POST:
-      return state.map(post => {
-        if ( post.id === action.postId ) {
-          return Object.assign({}, post, action.postOptions);
-        }
-        return post;
-      });
-
-    case DELETE_POST:
-      return state.filter(post => post.id !== action.postId);
-
-    case UPVOTE_POST:
-      return state.map(post => {
-        if ( post.id === action.postId ) {
-          return Object.assign({}, post, { voteScore: post.voteScore + 1 });
-        }
-        return post;
-      });
-
-    case DOWNVOTE_POST:
-      return state.map(post => {
-        if ( post.id === action.postId ) {
-          return Object.assign({}, post, { voteScore: post.voteScore - 1 });
-        }
-        return post;
-      });
-
-    default:
-      return state;
-  }
-};
-
-/**
- * @description Categories reducer
- * @param state
- * @param action
- * @returns {*}
- */
-const categories = (state = [], action) => {
-  switch ( action.type ) {
-    case ADD_CATEGORIES:
-      return ammo.unique(state, action.categories, 'name');
-    default:
-      return state;
+  },
+  sorting: {
+    date: '',
+    score: ''
   }
 };
 
@@ -196,6 +130,39 @@ const modals = (state = initialState.modals, action) => {
 };
 
 /**
+ * @description Categories reducer
+ * @param state
+ * @param action
+ * @returns {*}
+ */
+const categories = (state = [], action) => {
+  switch ( action.type ) {
+    case ADD_CATEGORIES:
+      return ammo.unique(state, action.categories, 'name');
+    default:
+      return state;
+  }
+};
+
+/**
+ * @description Sorting reducer
+ * @param state
+ * @param action
+ * @returns {*}
+ */
+const sorting = (state = initialState.sorting, action) => {
+  switch ( action.type ) {
+    case UPDATE_SORTING:
+      return {
+        ...state,
+        [action.sortType]: action.sortValue
+      };
+    default:
+      return state;
+  }
+};
+
+/**
  * @description Comments reducer
  * @param state
  * @param action
@@ -238,6 +205,80 @@ const comments = (state = [], action) => {
   }
 };
 
+/**
+ * @description Local store reducer
+ * @param state
+ * @param action
+ * @returns {{posts: Array, categories: Array, activeCategory: string, activePost: string}}
+ */
+const localStore = (state = initialState, action) => {
+  switch (action.type) {
+    case SYNC_LOCAL_STORE:
+      return action.data;
+    default:
+      return state;
+  }
+};
+
+/**
+ * @description Posts reducer
+ * @param state
+ * @param action
+ * @returns {*}
+ */
+const posts = (state = [], action) => {
+  switch ( action.type ) {
+    case ADD_POSTS:
+      return ammo.unique(state, action.posts, 'id');
+
+    case EDIT_POST:
+      return state.map(post => {
+        if ( post.id === action.postId ) {
+          return Object.assign({}, post, action.postOptions);
+        }
+        return post;
+      });
+
+    case DELETE_POST:
+      return state.filter(post => post.id !== action.postId);
+
+    case UPVOTE_POST:
+      return state.map(post => {
+        if ( post.id === action.postId ) {
+          return Object.assign({}, post, { voteScore: post.voteScore + 1 });
+        }
+        return post;
+      });
+
+    case DOWNVOTE_POST:
+      return state.map(post => {
+        if ( post.id === action.postId ) {
+          return Object.assign({}, post, { voteScore: post.voteScore - 1 });
+        }
+        return post;
+      });
+
+    case INCREMENT_COMMENTS_COUNT:
+      return state.map(post => {
+        if ( post.id === action.postId ) {
+          return Object.assign({}, post, { commentCount: post.commentCount + 1 });
+        }
+        return post;
+      });
+
+    case DECREMENT_COMMENTS_COUNT:
+      return state.map(post => {
+        if ( post.id === action.postId ) {
+          return Object.assign({}, post, { commentCount: post.commentCount - 1 });
+        }
+        return post;
+      });
+
+    default:
+      return state;
+  }
+};
+
 
 export default reduceReducers(
   combineReducers({
@@ -247,7 +288,8 @@ export default reduceReducers(
     activePost,
     activeComment,
     modals,
-    comments
+    comments,
+    sorting
   }),
   localStore
 );

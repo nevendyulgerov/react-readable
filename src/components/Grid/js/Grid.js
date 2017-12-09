@@ -5,56 +5,56 @@ import Masonry from 'react-masonry-component';
 import Sort from '../../Sort';
 import sortBy from 'sort-by';
 import Notification from '../../Notification';
+import { connect } from 'react-redux';
+import { updateSorting } from '../../../store/actions';
+import {getCachedItem} from '../../../persistent-store';
+import ammo from '../../../common/libs/ammo';
+import api from '../../../common/api';
+import { Link } from 'react-router-dom'
+
 const masonryOptions = { transitionDuration: 0 };
 
 class Grid extends React.Component {
   state = {
-    sortByDate: {
-      isActive: false,
-      direction: 'desc'
-    },
-    sortByVoteScore: {
-      isActive: false,
-      direction: 'desc'
+    isActive: false
+  };
+
+  componentDidMount() {
+    const urlParts = ammo.getUrlParts();
+    const categoryName = urlParts[0];
+
+    if ( ! categoryName ) {
+      return this.setState({ isActive: true });
     }
-  };
 
-  setSorting = (type, direction) => {
-    this.setState({
-      [type]: {
-        isActive: true,
-        direction
-      }
-    });
-  };
-
-  disableSorting = type => {
-    this.setState({
-      [type]: {
-        isActive: false,
-        direction: 'desc'
-      }
-    })
-  };
+    const cachedCategory = getCachedItem('categories', 'name', categoryName);
+    if ( ! cachedCategory ) {
+      return api.getCategories((err, categories) => {
+        if ( err || ! ammo.isArr(categories) || categories.filter(category => category.name === categoryName).length === 0 ) {
+          return ammo.select('.trigger.go-home').get().click();
+        }
+        this.setState({ isActive: true });
+      });
+    }
+    this.setState({ isActive: true });
+  }
 
   render() {
     const category = this.props.category;
     let posts = category ? this.props.posts.filter(item => item.category === category) : this.props.posts;
-    const sortByDate = this.state.sortByDate;
-    const sortByVoteScore = this.state.sortByVoteScore;
+    const sorting = this.props.sorting;
 
-    if ( sortByDate.isActive ) {
-      posts = posts.sort(sortBy(`${sortByDate.direction === 'asc' ? '' : '-'}timestamp`));
-    } else if ( sortByVoteScore.isActive ) {
-      posts = posts.sort(sortBy(`${sortByVoteScore.direction === 'asc' ? '' : '-'}voteScore`));
+    if ( sorting.date !== '' ) {
+      posts = posts.sort(sortBy(`${sorting.date === 'asc' ? '' : '-'}timestamp`));
+    } else if ( sorting.score !== '' ) {
+      posts = posts.sort(sortBy(`${sorting.score === 'asc' ? '' : '-'}voteScore`));
+    } else {
+      posts = posts.sort(sortBy('title'));
     }
 
     return (
-      <div className="component grid">
-        <Sort
-          setSorting={this.setSorting}
-          disableSorting={this.disableSorting}
-        />
+      <div className={`component grid ${this.state.isActive ? 'active' : ''}`}>
+        <Sort/>
 
         <Masonry
           className={'masonry-grid'}
@@ -75,9 +75,23 @@ class Grid extends React.Component {
             />
           )}
         </Masonry>
+
+        <Link to={'/'} className="trigger go-home hidden"/>
       </div>
     );
   }
 }
 
-export default Grid;
+const mapPropsToState = state => {
+  return {
+    sorting: state.sorting
+  };
+};
+
+const mapDispatchToState = dispatch => {
+  return {
+    updateSorting: (sortType, sortValue) => dispatch(updateSorting(sortType, sortValue))
+  };
+};
+
+export default connect(mapPropsToState, mapDispatchToState)(Grid);

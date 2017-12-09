@@ -5,13 +5,16 @@ import ammo from '../../../common/libs/ammo';
 class Modal extends React.Component {
 
   toggleOverlay = isActive => {
+    const body = ammo.select('body').get();
     const app = ammo.select('.component.app').get();
     const modalOverlay = ammo.select('.modal-overlay').get();
 
     if ( isActive && ! modalOverlay ) {
       ammo.appendAfter(`<div class="modal-overlay"></div>`, app);
+      body.classList.add('scroll-disabled');
     } else if ( ! isActive && modalOverlay ) {
       ammo.removeEl(modalOverlay);
+      body.classList.remove('scroll-disabled');
     }
   };
 

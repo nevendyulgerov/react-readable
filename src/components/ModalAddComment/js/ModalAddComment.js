@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from '../../Modal';
 import slickNote from '../../../common/libs/slick-note';
 import { connect } from 'react-redux'
-import { disableAddCommentModal, addComments, editPost } from '../../../store/actions';
+import { disableAddCommentModal, addComments, incrementCommentsCount, updateActivePost } from '../../../store/actions';
 import api from '../../../common/api';
 import '../css/ModalAddComment.css';
 import ammo from '../../../common/libs/ammo';
@@ -70,13 +70,21 @@ class ModalAddComment extends React.Component {
         });
       })
       .chain(() => {
+        const uniqueComments = ammo.unique(existingComments, [newComment], 'id');
 
         // nullify local state
         this.setState(Object.assign({}, stateSchema));
 
-        // update global store, combining existing comments with the new comment
-        this.props.addComments([...existingComments, ...[newComment]]);
+        // global store update
+        this.props.addComments(uniqueComments);
         this.props.disableAddCommentModal();
+        this.props.incrementCommentsCount(parentId);
+
+        if ( parentId === this.props.activePost.id ) {
+          this.props.updateActivePost(Object.assign({}, this.props.activePost, {
+            commentCount: this.props.activePost.commentCount + 1
+          }));
+        }
 
         slickNote.init({
           type: 'success',
@@ -153,7 +161,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     disableAddCommentModal: () => dispatch(disableAddCommentModal()),
-    addComments: comments => dispatch(addComments(comments))
+    addComments: comments => dispatch(addComments(comments)),
+    incrementCommentsCount: postId => dispatch(incrementCommentsCount(postId)),
+    updateActivePost: post => dispatch(updateActivePost(post))
   };
 };
 

@@ -20,6 +20,15 @@
   pointer-events: all;
 }
 
+.component.single-post .component.post-body {
+  white-space: normal;
+}
+
+.component.single-post .component.post-body p {
+  overflow: auto;
+  text-overflow: initial;
+}
+
 .component.single-post .component.post-footer .component.options-panel {
   opacity: 0;
   pointer-events: all;
@@ -56,5 +65,14 @@
 
   .component.single-post {
     width: calc(100% - 20px);
+  }
+}
+
+
+/** mobile devices **/
+@media (max-width: 640px) {
+
+  .component.single-post {
+    margin: 10px auto 0 auto;
   }
 }

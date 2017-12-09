@@ -4,14 +4,13 @@ import {Link} from 'react-router-dom';
 import '../css/Navigation.css';
 import { connect } from 'react-redux';
 import {enableAddPostModal, updateActiveCategory} from '../../../store/actions';
+import {dispatchEvent, interceptEvent, LOCATION_UPDATE} from "../../../global-events";
 
 class Navigation extends React.Component {
 
-  getUrlParts = () => window.location.pathname.split('/').filter(item => ammo.isStr(item) && item !== '');
-
   highlightNavItem = () => {
     const nav = ammo.select('.main-navigation').get();
-    const urlParts = this.getUrlParts();
+    const urlParts = ammo.getUrlParts();
 
     // normalize items
     ammo.selectAll('li', nav).each(item => item.classList.contains('selected') && item.classList.remove('selected'));
@@ -30,10 +29,13 @@ class Navigation extends React.Component {
   };
 
   componentDidMount() {
-    ammo.poll(resolve => {
-      this.highlightNavItem();
-      resolve(true);
-    }, () => {}, this.props.pollInterval);
+    this.highlightNavItem();
+
+    interceptEvent(LOCATION_UPDATE, () => {
+      setTimeout(() => {
+        this.highlightNavItem();
+      }, 50);
+    });
   }
 
   render() {
@@ -42,7 +44,10 @@ class Navigation extends React.Component {
         <nav className="main-navigation">
           <ul>
 
-            <li className="selected">
+            <li className="selected" onClick={() => {
+              // dispatch global event
+              dispatchEvent(LOCATION_UPDATE);
+            }}>
               <Link to={'/'}>
                 <span className="view-name">Home</span>
               </Link>
@@ -56,8 +61,14 @@ class Navigation extends React.Component {
                   {this.props.categories.map(category => (
                     <li key={category.name} data-name={category.name}>
                       <Link
-                        to={`${category.path}`}
-                        onClick={() => this.props.updateActiveCategory(category.name)}
+                        to={`/${category.path}`}
+                        replace={true}
+                        onClick={() => {
+                          this.props.updateActiveCategory(category.name);
+
+                          // dispatch global event
+                          dispatchEvent(LOCATION_UPDATE);
+                        }}
                       >{ammo.titlize(category.name)}</Link>
                     </li>
                   ))}

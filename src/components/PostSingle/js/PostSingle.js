@@ -1,20 +1,19 @@
 import React from 'react';
 import '../css/PostSingle.css';
 import ammo from '../../../common/libs/ammo';
-import api from '../../../common/api';
 import { connect } from 'react-redux';
-import { getCachedItem } from '../../../store';
 import PostHeader from '../../PostHeader';
 import PostBody from '../../PostBody';
 import PostFooter from '../../PostFooter';
 import PostActions from "../../PostActions";
-import {deletePost, downvotePost, updateActiveCategory, upvotePost} from "../../../store/actions";
+import {deletePost, downvotePost, updateActiveCategory, upvotePost, updateActivePost} from '../../../store/actions';
 import { Link } from 'react-router-dom';
 import CommentsList from '../../CommentsList';
+import { getCachedItem } from '../../../persistent-store';
+import api from '../../../common/api';
 
 class PostSingle extends React.Component {
   state = {
-    post: {},
     isActive: false,
     isCommentsSliderActive: false
   };
@@ -22,6 +21,10 @@ class PostSingle extends React.Component {
   deletePost = postId => {
     PostActions.deletePost(postId, () => {
       this.props.deletePost(postId);
+      this.props.updateActivePost({});
+
+      // TODO: Delete post comments from store
+
       ammo.select('.trigger.go-home').get().click();
     });
   };
@@ -34,6 +37,11 @@ class PostSingle extends React.Component {
       if ( cachedPost ) {
         this.setState({ post: cachedPost });
       }
+
+      // global state update
+      this.props.updateActivePost(Object.assign({}, this.props.activePost, {
+        voteScore: this.props.activePost.voteScore + 1
+      }));
     });
   };
 
@@ -45,22 +53,29 @@ class PostSingle extends React.Component {
       if ( cachedPost ) {
         this.setState({ post: cachedPost });
       }
-    });
-  };
 
-  addComment = postId => {
-    console.log(postId);
-  };
-
-  syncPostData = () => {
-    this.setState({
-      post: this.props.activePost,
-      isActive: true
+      // global state update
+      this.props.updateActivePost(Object.assign({}, this.props.activePost, {
+        voteScore: this.props.activePost.voteScore - 1
+      }));
     });
   };
 
   componentDidMount() {
-    this.syncPostData();
+    const urlParts = ammo.getUrlParts();
+    const postId = urlParts[1];
+
+    const cachedPost = getCachedItem('posts', 'id', postId);
+    if ( ! cachedPost ) {
+      return api.getPost(postId, (err, post) => {
+        if ( err || ! ammo.isObj(post) ) {
+          return ammo.select('.trigger.go-home').get().click();
+        }
+        this.setState({ isActive: true });
+      })
+    }
+
+    this.setState({ isActive: true });
   }
 
   componentWillReceiveProps(newProps) {
@@ -74,7 +89,7 @@ class PostSingle extends React.Component {
   };
 
   render() {
-    const post = this.state.post || {};
+    const post = this.props.activePost || {};
     const isActive = this.state.isActive;
 
     return (
@@ -92,7 +107,6 @@ class PostSingle extends React.Component {
 
         <PostFooter
           post={post}
-          addComment={this.addComment}
           upvotePost={this.upvotePost}
           downvotePost={this.downvotePost}
           setEditablePost={postId => this.props.setEditablePost(postId)}
@@ -102,10 +116,11 @@ class PostSingle extends React.Component {
 
         <CommentsList
           post={post}
+          onReady={() => this.setState({ isCommentsSliderActive: true })}
           isActive={this.state.isCommentsSliderActive}
         />
 
-        <Link to={'/'} className="trigger go-home hidden"/>
+        <Link to={`/`} className="trigger go-home hidden"/>
       </article>
     );
   }
@@ -120,6 +135,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     updateActiveCategory: category => dispatch(updateActiveCategory(category)),
+    updateActivePost: post => dispatch(updateActivePost(post)),
     deletePost: postId => dispatch(deletePost(postId)),
     upvotePost: postId => dispatch(upvotePost(postId)),
     downvotePost: postId => dispatch(downvotePost(postId))

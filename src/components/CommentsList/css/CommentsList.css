@@ -30,7 +30,7 @@
   background-color: #d5d6d2;
 }
 
-.component.comments-list .comments-list {
+.component.comments-list ul.comments-list {
   list-style-type: none;
   width: 100%;
   max-height: 800px;

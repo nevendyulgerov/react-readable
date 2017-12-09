@@ -7,6 +7,7 @@ import { updateActiveCategory, updateActivePost, enableEditPostModal, enableAddC
 import OptionsPanel from '../../OptionsPanel';
 import CounterVoteScore from '../../CounterVoteScore';
 import CounterComments from '../../CounterComments';
+import {dispatchEvent, LOCATION_UPDATE} from '../../../global-events';
 
 class PostFooter extends React.Component {
   state = {
@@ -24,10 +25,16 @@ class PostFooter extends React.Component {
       <footer className="component post-footer">
         <div className="category" title="Category" style={{background: ammo.randomGradient(122)}}>
           <Link
-            to={`${post.category}`}
+            to={`/${post.category}`}
+            replace={true}
             className="trigger view-category"
             title={`View posts from category '${post.category}'`}
-            onClick={() => this.updateActiveCategory(post.category)}
+            onClick={() => {
+              this.updateActiveCategory(post.category);
+
+              // dispatch global event
+              dispatchEvent(LOCATION_UPDATE);
+            }}
           >
             <span className="category-name">{post.category}</span>
           </Link>
@@ -38,6 +45,10 @@ class PostFooter extends React.Component {
           onAddComment={() => {
             this.props.updateActivePost(post);
             this.props.enableAddCommentModal();
+
+            if ( ammo.isFunc(this.props.onAddComment) ) {
+              this.props.onAddComment();
+            }
           }}
           onUpvote={() => this.props.upvotePost(post.id)}
           onDownvote={() => this.props.downvotePost(post.id)}

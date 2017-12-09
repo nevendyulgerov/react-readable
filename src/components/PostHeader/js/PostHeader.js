@@ -4,12 +4,16 @@ import ammo from '../../../common/libs/ammo';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateActivePost } from '../../../store/actions';
+import { LOCATION_UPDATE, dispatchEvent } from '../../../global-events';
 
 class PostHeader extends React.Component {
   selectPost = () => {
 
     // update global state
     this.props.updateActivePost(this.props.post);
+
+    // dispatch global event
+    dispatchEvent(LOCATION_UPDATE);
   };
 
   render() {

@@ -22,8 +22,8 @@ class ModalEditPost extends React.Component {
     if ( ! title || title === '' || title.length < 5 || title.length > 100 ) {
       slickNote.init({
         type: 'error',
-        title: 'Invalid post title',
-        content: 'Make sure to insert a valid post title, containing between 5 and 100 letters.'
+        title: 'Error',
+        content: 'Invalid post title. Make sure to insert a valid post title, containing between 5 and 100 letters.'
       });
       return false;
     }
@@ -31,8 +31,8 @@ class ModalEditPost extends React.Component {
     if ( ! body || body === '' || body.length < 10 || body.length > 200 ) {
       slickNote.init({
         type: 'error',
-        title: 'Invalid post body',
-        content: 'Make sure to insert a valid post body, containing between 10 and 200 letters.'
+        title: 'Error',
+        content: 'Invalid post body. Make sure to insert a valid post body, containing between 10 and 200 letters.'
       });
       return false;
     }
@@ -58,7 +58,7 @@ class ModalEditPost extends React.Component {
       slickNote.init({
         type: 'success',
         title: 'Success',
-        content: 'Your post was edited successfully.'
+        content: 'Post edited successfully.'
       });
 
       if ( ammo.isFunc(callback) ) {

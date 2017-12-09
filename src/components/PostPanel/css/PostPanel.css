@@ -38,3 +38,7 @@
   position: relative;
   top: -1px;
 }
+
+.component.post-panel .component.comments-list ul {
+  max-height: 200px;
+}
