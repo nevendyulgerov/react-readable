@@ -8,7 +8,7 @@ export const persistentStore = ammo.store(storeKey);
 export const getPersistentStoreData = itemKey => persistentStore.getItem(itemKey);
 
 export const getCachedItems = (itemKey, key, value) => {
-  const data = getPersistentStoreData(itemKey);
+  const data = getPersistentStoreData(itemKey) || [];
   return data.filter(item => item[key] === value);
 };
 
