@@ -1,16 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import '../css/PostSingle.css';
 import ammo from '../../../common/libs/ammo';
-import { connect } from 'react-redux';
+import api from '../../../common/api';
+import {deletePost, downvotePost, editPost, updateActiveCategory, upvotePost, updateActivePost, deleteComment } from '../../../store/actions';
+import { getCachedItem } from '../../../persistent-store';
 import PostHeader from '../../PostHeader';
 import PostBody from '../../PostBody';
 import PostFooter from '../../PostFooter';
-import PostActions from "../../PostActions";
-import {deletePost, downvotePost, updateActiveCategory, upvotePost, updateActivePost} from '../../../store/actions';
-import { Link } from 'react-router-dom';
+import PostActions from '../../PostActions';
 import CommentsList from '../../CommentsList';
-import { getCachedItem } from '../../../persistent-store';
-import api from '../../../common/api';
 
 class PostSingle extends React.Component {
   state = {
@@ -22,10 +22,10 @@ class PostSingle extends React.Component {
     PostActions.deletePost(postId, () => {
       this.props.deletePost(postId);
       this.props.updateActivePost({});
-
-      // TODO: Delete post comments from store
-
-      ammo.select('.trigger.go-home').get().click();
+      PostActions.deletePostComments(postId, comments => {
+        comments.map(comment => this.props.deleteComment(comment.id));
+        ammo.select('.trigger.go-home').get().click();
+      });
     });
   };
 
@@ -38,7 +38,7 @@ class PostSingle extends React.Component {
         this.setState({ post: cachedPost });
       }
 
-      // global state update
+      // update global state
       this.props.updateActivePost(Object.assign({}, this.props.activePost, {
         voteScore: this.props.activePost.voteScore + 1
       }));
@@ -54,10 +54,12 @@ class PostSingle extends React.Component {
         this.setState({ post: cachedPost });
       }
 
-      // global state update
+      // update global state
       this.props.updateActivePost(Object.assign({}, this.props.activePost, {
         voteScore: this.props.activePost.voteScore - 1
       }));
+
+      this.props.editPost(this.props.activePost.id, { voteScore: this.props.activePost.voteScore - 1 })
     });
   };
 
@@ -138,7 +140,9 @@ const mapDispatchToProps = dispatch => {
     updateActivePost: post => dispatch(updateActivePost(post)),
     deletePost: postId => dispatch(deletePost(postId)),
     upvotePost: postId => dispatch(upvotePost(postId)),
-    downvotePost: postId => dispatch(downvotePost(postId))
+    editPost: (postId, postOptions) => dispatch(editPost(postId, postOptions)),
+    downvotePost: postId => dispatch(downvotePost(postId)),
+    deleteComment: commentId => dispatch(deleteComment(commentId))
   };
 };
 
