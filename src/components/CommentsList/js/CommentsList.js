@@ -5,13 +5,14 @@ import Comment from '../../Comment';
 import sortBy from 'sort-by';
 import { getCachedItems } from '../../../persistent-store';
 import ammo from '../../../common/libs/ammo';
+import { connect } from 'react-redux';
 
 class CommentsList extends React.Component {
   state = {
     comments: []
   };
 
-  syncComments(callback) {
+  updateComments(callback) {
     const post = this.props.post;
     const cachedComments = getCachedItems('comments', 'parentId', post.id);
 
@@ -27,13 +28,14 @@ class CommentsList extends React.Component {
       if ( err ) {
         return console.error(err);
       }
+
       // set comments data from server
       this.setState({ comments }, () => ammo.isFunc(callback) && callback());
     });
   }
 
   componentDidMount() {
-    this.syncComments(() => {
+    this.updateComments(() => {
       if ( ammo.isFunc(this.props.onReady) ) {
         this.props.onReady();
       }
@@ -41,8 +43,8 @@ class CommentsList extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if ( newProps.post.id ) {
-      this.syncComments();
+    if ( newProps.post.id || newProps.activeComment.body !== this.props.activeComment.body ) {
+      this.updateComments();
     }
   }
 
@@ -55,7 +57,11 @@ class CommentsList extends React.Component {
 
           {comments.map(comment => (
             <li className="comment" key={comment.id} data-id={comment.id}>
-              <Comment comment={comment}/>
+              <Comment
+                comment={comment}
+                post={this.props.post}
+                updateComments={() => this.updateComments()}
+              />
             </li>
           ))}
 
@@ -65,4 +71,10 @@ class CommentsList extends React.Component {
   };
 }
 
-export default CommentsList;
+const mapStateToProps = state => {
+  return {
+    activeComment: state.activeComment
+  };
+};
+
+export default connect(mapStateToProps)(CommentsList);

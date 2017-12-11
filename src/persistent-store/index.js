@@ -1,12 +1,14 @@
 import ammo from '../common/libs/ammo';
-import { storeReducer } from './reducers';
+import { storeInterceptor } from './interceptors';
 
 const storeKey = 'readable';
 
 export const persistentStore = ammo.store(storeKey);
 
+export const getPersistentStoreData = itemKey => persistentStore.getItem(itemKey);
+
 export const getCachedItems = (itemKey, key, value) => {
-  const data = persistentStore.getItem(itemKey);
+  const data = getPersistentStoreData(itemKey);
   return data.filter(item => item[key] === value);
 };
 
@@ -17,6 +19,6 @@ export const getCachedItem = (itemKey, key, value) => {
 
 export const persistentStoreInterceptor = store => next => action => {
   const storeData = store.getState();
-  storeReducer(persistentStore, storeData, action);
+  storeInterceptor(persistentStore, storeData, action);
   return next(action);
 };

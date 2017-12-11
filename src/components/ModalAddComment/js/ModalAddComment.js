@@ -1,11 +1,12 @@
 import React from 'react';
-import Modal from '../../Modal';
-import slickNote from '../../../common/libs/slick-note';
-import { connect } from 'react-redux'
-import { disableAddCommentModal, addComments, incrementCommentsCount, updateActivePost } from '../../../store/actions';
-import api from '../../../common/api';
+import { connect } from 'react-redux';
 import '../css/ModalAddComment.css';
+import api from '../../../common/api';
 import ammo from '../../../common/libs/ammo';
+import slickNote from '../../../common/libs/slick-note';
+import { disableAddCommentModal, addComments, incrementCommentsCount, updateActivePost } from '../../../store/actions';
+import Modal from '../../Modal';
+
 const stateSchema = {
   body: '',
   author: '',

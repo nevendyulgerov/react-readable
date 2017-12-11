@@ -1,10 +1,11 @@
 import React from 'react';
-import ammo from '../../../common/libs/ammo';
-import '../css/Breadcrumbs.css';
-import { Link } from 'react-router-dom';
-import { getCachedItem } from '../../../persistent-store';
 import { connect } from 'react-redux';
-import {LOCATION_UPDATE, interceptEvent, dispatchEvent} from '../../../global-events';
+import { Link } from 'react-router-dom';
+import '../css/Breadcrumbs.css';
+import ammo from '../../../common/libs/ammo';
+import { getCachedItem } from '../../../persistent-store';
+import { interceptLocationUpdate, dispatchLocationUpdate } from '../../../global-events';
+import { updateActiveCategory } from '../../../store/actions';
 
 class Breadcrumbs extends React.Component {
   state = {
@@ -69,13 +70,14 @@ class Breadcrumbs extends React.Component {
     const breadcrumbs = this.getBreadcrumbs();
     this.setState({ breadcrumbs });
 
-    interceptEvent(LOCATION_UPDATE, () => {
+    interceptLocationUpdate(() => {
       setTimeout(() => this.setState({ breadcrumbs: this.getBreadcrumbs() }), 50);
     });
   }
 
   render() {
     const breadcrumbs = this.state.breadcrumbs;
+    const categories = this.props.categories;
 
     return (
       <div className="component breadcrumbs" title={'Breadcrumbs'}>
@@ -91,7 +93,12 @@ class Breadcrumbs extends React.Component {
                 className={'breadcrumb'}
                 onClick={() => {
                   // dispatch global event
-                  dispatchEvent(LOCATION_UPDATE);
+                  dispatchLocationUpdate();
+
+                  const matchingCategories = categories.filter(category => category.name === breadcrumb.name.toLowerCase());
+                  if ( matchingCategories[0] ) {
+                    this.props.updateActiveCategory(matchingCategories[0].name);
+                  }
                 }}
               >{breadcrumb.name}</Link>
 
@@ -110,8 +117,14 @@ class Breadcrumbs extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    activePost: state.activePost
+    categories: state.categories
   };
 };
 
-export default connect(mapStateToProps)(Breadcrumbs);
+const mapDispatchToProps = dispatch => {
+  return {
+    updateActiveCategory: category => dispatch(updateActiveCategory(category))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Breadcrumbs);

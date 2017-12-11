@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 import reduceReducers from 'reduce-reducers';
 import ammo from '../../common/libs/ammo';
 import {
-  SYNC_LOCAL_STORE,
+  UPDATE_GLOBAL_STORE,
+  NORMALIZE_PERSISTENT_STORE_DATA,
   ADD_POSTS,
   EDIT_POST,
   DELETE_POST,
@@ -30,11 +31,12 @@ import {
   UPDATE_SORTING
 } from '../actions';
 
-const initialState = {
+export const initialState = {
   posts: [],
   categories: [],
-  activeCategory: '',
-  activePost: '',
+  activeCategory: {},
+  activePost: {},
+  activeComment: {},
   modals: {
     addPost: false,
     ediPost: false,
@@ -53,7 +55,7 @@ const initialState = {
  * @param action
  * @returns {string}
  */
-const activeCategory = (state = '', action) => {
+const activeCategory = (state = initialState.activeCategory, action) => {
   switch ( action.type ) {
     case UPDATE_ACTIVE_CATEGORY:
       return action.category;
@@ -68,7 +70,7 @@ const activeCategory = (state = '', action) => {
  * @param action
  * @returns {string}
  */
-const activePost = (state = '', action) => {
+const activePost = (state = initialState.activePost, action) => {
   switch ( action.type ) {
     case UPDATE_ACTIVE_POST:
       return action.post;
@@ -83,7 +85,7 @@ const activePost = (state = '', action) => {
  * @param action
  * @returns {string}
  */
-const activeComment = (state = '', action) => {
+const activeComment = (state = initialState.activeComment, action) => {
   switch ( action.type ) {
     case UPDATE_ACTIVE_COMMENT:
       return action.comment;
@@ -206,15 +208,17 @@ const comments = (state = [], action) => {
 };
 
 /**
- * @description Local store reducer
+ * @description Global store reducer
  * @param state
  * @param action
  * @returns {{posts: Array, categories: Array, activeCategory: string, activePost: string}}
  */
-const localStore = (state = initialState, action) => {
+const globalStore = (state = initialState, action) => {
   switch (action.type) {
-    case SYNC_LOCAL_STORE:
+    case UPDATE_GLOBAL_STORE:
       return action.data;
+    case NORMALIZE_PERSISTENT_STORE_DATA:
+      return state;
     default:
       return state;
   }
@@ -291,5 +295,5 @@ export default reduceReducers(
     comments,
     sorting
   }),
-  localStore
+  globalStore
 );

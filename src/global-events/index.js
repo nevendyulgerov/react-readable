@@ -6,7 +6,7 @@ export const LOCATION_UPDATE = 'LOCATION_UPDATE';
  * @param type
  * @returns {*}
  */
-export const dispatchEvent = (type) => {
+const dispatchEvent = (type) => {
   switch ( type ) {
     case LOCATION_UPDATE:
       return document.dispatchEvent(new Event('readable.location.update'));
@@ -21,7 +21,7 @@ export const dispatchEvent = (type) => {
  * @param callback
  * @returns {*}
  */
-export const interceptEvent = (type, callback) => {
+const interceptEvent = (type, callback) => {
   switch ( type ) {
     case LOCATION_UPDATE:
       return document.addEventListener('readable.location.update', callback);
@@ -29,3 +29,16 @@ export const interceptEvent = (type, callback) => {
       return '';
   }
 };
+
+/**
+ * @description Dispatch location update event
+ * @returns {*}
+ */
+export const dispatchLocationUpdate = () => dispatchEvent(LOCATION_UPDATE);
+
+/**
+ * @description Intercept location update event
+ * @param callback
+ * @returns {*}
+ */
+export const interceptLocationUpdate = callback => interceptEvent(LOCATION_UPDATE, callback);

@@ -93,6 +93,12 @@ class ModalAddPost extends React.Component {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    if ( newProps.categories[0] ) {
+      this.setState({ category: newProps.categories[0].name });
+    }
+  }
+
   render() {
     return (
       <div className="component add-post-modal">

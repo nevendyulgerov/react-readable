@@ -1,88 +1,71 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import Grid from '../../Grid';
-import ammo from '../../../common/libs/ammo';
-import Navigation from '../../Navigation';
-import '../css/App.css';
-import api from '../../../common/api';
-import PostSingle from '../../PostSingle';
 import { connect } from 'react-redux';
-import { addPosts, addCategories } from '../../../store/actions';
 import { BrowserRouter } from 'react-router-dom';
-import {persistentStore} from '../../../store';
+import '../css/App.css';
+import { Route } from 'react-router-dom';
+import ammo from '../../../common/libs/ammo';
+import api from '../../../common/api';
+import { addPosts, addCategories, normalizePersistentStoreData } from '../../../store/actions';
+import { getPersistentStoreData } from '../../../persistent-store';
+import Navigation from '../../Navigation';
+import Breadcrumbs from '../../Breadcrumbs';
+import Grid from '../../Grid';
+import PostSingle from '../../PostSingle';
 import ModalAddPost from '../../ModalAddPost';
 import ModalEditPost from '../../ModalEditPost';
 import ModalAddComment from '../../ModalAddComment';
-import Breadcrumbs from '../../Breadcrumbs';
+import ModalEditComment from '../../ModalEditComment';
 
 class App extends Component {
-  state = {
-    isAddPostModalActive: false,
-    isEditPostModalActive: false,
-    isAddCommentModalActive: false,
-    commentForEdit: {}
-  };
 
   componentDidMount() {
+    const cachedPosts = getPersistentStoreData('posts');
+    const cachedCategories = getPersistentStoreData('categories');
 
-    // retrieve cached posts and categories
-    const cachedPosts = persistentStore.getItem('posts');
-    const cachedCategories = persistentStore.getItem('categories');
-
-    // sequence:
-    // - get posts (default source: localStorage)
-    // - get categories (default source: localStorage)
     ammo.sequence()
       .chain(seq => {
+        const dataSource = cachedPosts[0] ? 'cache' : 'server';
+        if ( dataSource === 'cache' ) {
 
-        // ... if cached posts exist
-        if ( cachedPosts[0] ) {
-
-          // ... update global state for 'posts' with cached data
+          // update global state
           this.props.addPosts(cachedPosts);
-          return seq.resolve('cache');
+          return seq.resolve();
         }
 
-        // alternatively retrieve posts from the server
+        // normalize persistent data for 'posts'
+        this.props.normalizePersistentStoreData('posts');
+
+        // normalize persistent data for 'comments'
+        this.props.normalizePersistentStoreData('comments');
+
         api.getPosts((err, posts) => {
           if ( err ) {
             return console.error(err);
           }
 
-          // update global state for 'posts' with server data
+          // update global state
           this.props.addPosts(posts);
-          seq.resolve('server');
+          seq.resolve();
         });
       })
       .chain(seq => {
+        const dataSource = cachedCategories[0] ? 'cache' : 'server';
+        if ( dataSource === 'cache' ) {
 
-        // TODO: Refactor this chain, persistent data should not be modified directly
-
-        // ... if data for posts is being retrieved from server
-        if ( seq.response.value === 'server' ) {
-
-          // ... nullify persistent data for posts and comments
-          persistentStore.setItem('posts', []);
-          persistentStore.setItem('comments', []);
-        }
-        seq.resolve();
-      })
-      .chain(() => {
-
-        // ... if cached categories exist
-        if ( cachedCategories[0] ) {
-
-          // ... global state update from cached data
-          return this.props.addCategories(cachedCategories);
+          // update global state
+          this.props.addCategories(cachedCategories);
+          return seq.resolve();
         }
 
-        // alternatively retrieve categories from the server
+        // normalize persistent data for 'categories'
+        this.props.normalizePersistentStoreData('categories');
+
         api.getCategories((err, res) => {
           if ( err ) {
             return console.error(err);
           }
 
-          // global state update from server data
+          // update global state
           this.props.addCategories(res.categories);
         });
       })
@@ -133,6 +116,7 @@ class App extends Component {
           <ModalAddPost/>
           <ModalEditPost/>
           <ModalAddComment/>
+          <ModalEditComment/>
         </div>
       </BrowserRouter>
     );
@@ -151,7 +135,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addPosts: posts => dispatch(addPosts(posts)),
-    addCategories: categories => dispatch(addCategories(categories))
+    addCategories: categories => dispatch(addCategories(categories)),
+    normalizePersistentStoreData: key => dispatch(normalizePersistentStoreData(key))
   };
 };
 

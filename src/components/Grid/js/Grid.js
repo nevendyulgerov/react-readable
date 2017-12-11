@@ -1,16 +1,16 @@
 import React from 'react';
-import '../css/Grid.css';
-import PostPanel from '../../PostPanel';
-import Masonry from 'react-masonry-component';
-import Sort from '../../Sort';
 import sortBy from 'sort-by';
-import Notification from '../../Notification';
 import { connect } from 'react-redux';
-import { updateSorting } from '../../../store/actions';
-import {getCachedItem} from '../../../persistent-store';
+import { Link } from 'react-router-dom';
+import Masonry from 'react-masonry-component';
+import '../css/Grid.css';
 import ammo from '../../../common/libs/ammo';
 import api from '../../../common/api';
-import { Link } from 'react-router-dom'
+import PostPanel from '../../PostPanel';
+import Sort from '../../Sort';
+import Notification from '../../Notification';
+import { updateSorting } from '../../../store/actions';
+import { getCachedItem } from '../../../persistent-store';
 
 const masonryOptions = { transitionDuration: 0 };
 

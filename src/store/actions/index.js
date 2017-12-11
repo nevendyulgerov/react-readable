@@ -1,4 +1,5 @@
-export const SYNC_LOCAL_STORE = 'SYNC_LOCAL_STORE';
+export const UPDATE_GLOBAL_STORE = 'UPDATE_GLOBAL_STORE';
+export const NORMALIZE_PERSISTENT_STORE_DATA = 'NORMALIZE_PERSISTENT_STORE_DATA';
 
 export const ADD_POSTS = 'ADD_POSTS';
 export const EDIT_POST = 'EDIT_POST';
@@ -33,14 +34,26 @@ export const UPDATE_SORTING = 'UPDATE_SORTING';
 
 
 /**
- * @description Sync local store action
+ * @description Update global store action
  * @param data
  * @returns {{type: string, data: *}}
  */
-export const syncLocalStore = data => {
+export const updateGlobalStore = data => {
   return {
-    type: SYNC_LOCAL_STORE,
+    type: UPDATE_GLOBAL_STORE,
     data
+  };
+};
+
+
+/**
+ * @description Normalize persistent store data action
+ * @returns {{type: string, data: *}}
+ */
+export const normalizePersistentStoreData = key => {
+  return {
+    type: NORMALIZE_PERSISTENT_STORE_DATA,
+    key
   };
 };
 
