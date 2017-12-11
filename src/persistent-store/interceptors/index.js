@@ -15,13 +15,20 @@ import {
   DOWNVOTE_COMMENT,
   INCREMENT_COMMENTS_COUNT,
   DECREMENT_COMMENTS_COUNT,
-  UPDATE_SORTING
+  UPDATE_SORTING,
+  NORMALIZE_PERSISTENT_STORE_DATA
 } from '../../store/actions';
 import ammo from '../../common/libs/ammo';
 
-export const storeReducer = (persistentStore, storeData, action) => {
+import { initialState } from '../../store/reducers';
+
+export const storeInterceptor = (persistentStore, storeData, action) => {
 
   switch ( action.type ) {
+    case NORMALIZE_PERSISTENT_STORE_DATA:
+      persistentStore.setItem(action.key, initialState[action.key]);
+      break;
+
     case ADD_POSTS:
       persistentStore.setItem('posts', ammo.unique(storeData.posts, action.posts, 'id'));
       break;
