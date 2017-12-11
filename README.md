@@ -63,7 +63,7 @@ The following endpoints are available:
 ## Important
 Due to the light nature of the provided server, this app utilizes a custom localStorage implementation to persists its data on the client. This means that once, on first load, the app retrieves the needed data from the server, it will perform all subsequent read operations synchronously on localStorage data rather than asynchronously on server data using XmlHttpRequest.
 
-This strategy guarantees that your data will persist between page reloads.
+This strategy guarantees that your data will persist between page reloads. It also means increased performance due to the reduced times required for retrieving app data.
 
 To normalize (clear) the persistent store for the app, simply remove all posts. If there are zero cached posts, the app will normalize its localStorage data and will retrieve the latest server data.
 
