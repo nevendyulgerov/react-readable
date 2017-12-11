@@ -10,7 +10,7 @@
  */
 
 
-import ammo from "../index";
+import ammo from '../index';
 
 /**
  * @description Provide DOM context
@@ -794,6 +794,13 @@ export const unique = (arrA, arrB, prop) => {
  */
 export const getUrlParts = () => window.location.pathname.split('/').filter(item => ammo.isStr(item) && item !== '');
 
+/**
+ * @description Is mobile device test
+ * @returns {boolean}
+ */
+export const isMobileDevice = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 
 /**
  * @description Create encapsulated, augmentative, object-based application
