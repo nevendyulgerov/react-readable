@@ -61,7 +61,7 @@ The following endpoints are available:
 | `DELETE /comments/:id` | Sets a comment's deleted flag to `true`. | &nbsp; |
 
 ## Important
-Due to the light nature of the provided server, this app utilizes a custom localStorage implementation to persists its data on the client. This means that once, on first load, the app retrieves the needed data from the server, it will perform all subsequent read operations (using the GET method) on localStorage data.
+Due to the light nature of the provided server, this app utilizes a custom localStorage implementation to persists its data on the client. This means that once, on first load, the app retrieves the needed data from the server, it will perform all subsequent read operations synchronously on localStorage data rather than asynchronously on server data using XmlHttpRequest.
 
 This strategy guarantees that your data will persist between page reloads.
 
