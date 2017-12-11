@@ -1,10 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import '../css/PostHeader.css';
 import ammo from '../../../common/libs/ammo';
-import {Link} from 'react-router-dom';
-import { connect } from 'react-redux';
 import { updateActivePost } from '../../../store/actions';
-import { LOCATION_UPDATE, dispatchEvent } from '../../../global-events';
+import { dispatchLocationUpdate } from '../../../global-events';
 
 class PostHeader extends React.Component {
   selectPost = () => {
@@ -13,7 +13,7 @@ class PostHeader extends React.Component {
     this.props.updateActivePost(this.props.post);
 
     // dispatch global event
-    dispatchEvent(LOCATION_UPDATE);
+    dispatchLocationUpdate();
   };
 
   render() {
@@ -52,10 +52,8 @@ class PostHeader extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    activePost: state.activePost
-  }
+const mapStateToProps = () => {
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
