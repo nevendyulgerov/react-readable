@@ -1,8 +1,8 @@
 import React from 'react';
-import '../css/Sort.css';
 import { connect } from 'react-redux';
+import '../css/Sort.css';
 import ammo from '../../../common/libs/ammo';
-import {updateSorting} from "../../../store/actions";
+import { updateSorting } from '../../../store/actions';
 
 const sortingItems = [{
   label: 'off',
