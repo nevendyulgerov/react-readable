@@ -70,15 +70,15 @@ class ModalEditPost extends React.Component {
   updateField(event, field) {
     this.setState({
       isFocused: true,
-      [field]: event.target.value
+      [field]: event.target.value || ''
     });
   }
 
   componentWillReceiveProps(newProps) {
     if ( ammo.isObj(newProps.activePost) ) {
       this.setState({
-        title: newProps.activePost.title,
-        body: newProps.activePost.body
+        title: newProps.activePost.title || '',
+        body: newProps.activePost.body || ''
       });
     }
   }
@@ -99,7 +99,7 @@ class ModalEditPost extends React.Component {
           }}
           content={(
             <div className="modal-content">
-              <div className="field" key={'post-title'}>
+              <div className="field">
                 <input
                   ref={input => {
                     if ( input && ! this.state.isFocused ) {
@@ -113,7 +113,7 @@ class ModalEditPost extends React.Component {
                   onChange={e => this.updateField(e, 'title')}
                 />
               </div>
-              <div className="field" key={'post-body'}>
+              <div className="field">
                 <textarea
                   name={'post-body'}
                   placeholder={'Post Body'}
