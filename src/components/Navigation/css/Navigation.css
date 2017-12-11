@@ -3,18 +3,6 @@
  * Styles for component Navigation
  */
 
-/**
- Color Scheme: Retro & Relaxing
- ginger: #d35c37
- hazelnut: #bf9a77
- oat: #d6c6b9
- sky: #97b8c3
- pea: #919636
- grey: #d5d6d2
- charcoal: #353c3f
- greenery: #6fb98f
- */
-
 .component.navigation {
   display: flex;
   position: relative;
