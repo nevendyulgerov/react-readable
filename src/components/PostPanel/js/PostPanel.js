@@ -1,10 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import '../css/PostPanel.css';
-import {connect} from 'react-redux';
+import { deletePost, updateActiveCategory, upvotePost, downvotePost } from '../../../store/actions';
 import PostHeader from '../../PostHeader';
 import PostBody from '../../PostBody';
 import PostFooter from '../../PostFooter';
-import {deletePost, updateActiveCategory, upvotePost, downvotePost} from '../../../store/actions';
 import PostActions from '../../PostActions';
 import CommentsList from '../../CommentsList';
 
@@ -65,10 +65,8 @@ class PostPanel extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    activeCategory: state.activeCategory
-  }
+const mapStateToProps = () => {
+  return {}
 };
 
 const mapDispatchToProps = dispatch => {
