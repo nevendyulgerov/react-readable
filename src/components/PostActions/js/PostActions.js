@@ -1,7 +1,7 @@
 import ammo from '../../../common/libs/ammo';
+import { getCachedItems } from '../../../persistent-store';
 import slickNote from '../../../common/libs/slick-note';
 import api from '../../../common/api';
-import { getCachedItem } from '../../../store';
 
 
 export const deletePost = (postId, callback) => {
@@ -69,6 +69,33 @@ export const editPost = (postId, postOptions, callback) => {
       });
     })
     .chain(seq => callback(seq.response.value))
+    .execute();
+};
+
+export const deletePostComments = (postId, callback) => {
+  const cachedComments = getCachedItems('comments', 'parentId', postId);
+  let unifiedComments = [];
+  let serverComments = [];
+
+  ammo.sequence()
+    .chain(seq => {
+      api.getPostComments(postId, (err, comments) => {
+        if ( err || ! ammo.isArr(comments) ) {
+          return callback(cachedComments);
+        }
+        serverComments = comments;
+        unifiedComments = ammo.unique(cachedComments, serverComments, 'id');
+        seq.resolve();
+      })
+    })
+    .chain(() => {
+      if ( serverComments.length === 0 ) {
+        return callback(unifiedComments);
+      }
+      ammo.recurIter((index, resolve) => {
+        api.deleteComment(serverComments[index].id, () => resolve(index + 1 < serverComments.length));
+      }, () => callback(unifiedComments));
+    })
     .execute();
 };
 
