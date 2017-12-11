@@ -3,10 +3,6 @@
  * Styles for component ModalEditPost
  */
 
-.component.edit-post-modal {
-
-}
-
 .component.edit-post-modal .modal-body .modal-content .field textarea {
   display: inherit;
   resize: vertical;
