@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ammo from '../../../common/libs/ammo';
 import '../css/Notification.css'
-import {dispatchEvent, LOCATION_UPDATE} from '../../../global-events';
+import ammo from '../../../common/libs/ammo';
+import { dispatchLocationUpdate } from '../../../global-events';
 
 const Notification = props => (
   <div className={`component notification ${props.type || 'info'}`} style={{background: ammo.randomGradient(140)}}>
@@ -12,7 +12,7 @@ const Notification = props => (
       <Link to={props.buttonUrl} className="trigger" onClick={() => {
 
         // dispatch global event
-        dispatchEvent(LOCATION_UPDATE);
+        dispatchLocationUpdate();
 
       }}>{props.buttonText}</Link>
     )}
