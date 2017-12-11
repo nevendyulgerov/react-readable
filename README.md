@@ -14,6 +14,7 @@ A content and comment web app created with ReactJS. Users are able to post conte
 ## Backend Server
 
 To simplify your development process, we've provided a backend server for you to develop against. The server is built in Node, but it is very simple.
+[Download](https://github.com/udacity/reactnd-project-readable-starter/archive/master.zip)
 
 To install and start the API server, run the following commands in this directory:
 
