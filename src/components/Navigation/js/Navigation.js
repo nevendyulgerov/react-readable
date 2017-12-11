@@ -1,10 +1,10 @@
 import React from 'react';
-import ammo from '../../../common/libs/ammo';
+import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import '../css/Navigation.css';
-import { connect } from 'react-redux';
-import {enableAddPostModal, updateActiveCategory} from '../../../store/actions';
-import {dispatchEvent, interceptEvent, LOCATION_UPDATE} from "../../../global-events";
+import ammo from '../../../common/libs/ammo';
+import { enableAddPostModal, updateActiveCategory } from '../../../store/actions';
+import { dispatchLocationUpdate, interceptLocationUpdate } from '../../../global-events';
 
 class Navigation extends React.Component {
 
@@ -31,10 +31,8 @@ class Navigation extends React.Component {
   componentDidMount() {
     this.highlightNavItem();
 
-    interceptEvent(LOCATION_UPDATE, () => {
-      setTimeout(() => {
-        this.highlightNavItem();
-      }, 50);
+    interceptLocationUpdate(() => {
+      setTimeout(() => this.highlightNavItem(), 50);
     });
   }
 
@@ -46,7 +44,7 @@ class Navigation extends React.Component {
 
             <li className="selected" onClick={() => {
               // dispatch global event
-              dispatchEvent(LOCATION_UPDATE);
+              dispatchLocationUpdate();
             }}>
               <Link to={'/'}>
                 <span className="view-name">Home</span>
@@ -67,7 +65,7 @@ class Navigation extends React.Component {
                           this.props.updateActiveCategory(category.name);
 
                           // dispatch global event
-                          dispatchEvent(LOCATION_UPDATE);
+                          dispatchLocationUpdate();
                         }}
                       >{ammo.titlize(category.name)}</Link>
                     </li>
@@ -88,10 +86,8 @@ class Navigation extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    activeCategory: state.activeCategory
-  };
+const mapStateToProps = () => {
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
