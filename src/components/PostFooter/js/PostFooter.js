@@ -1,22 +1,18 @@
 import React from 'react';
-import '../css/PostFooter.css';
-import ammo from '../../../common/libs/ammo';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
+import '../css/PostFooter.css';
+import ammo from '../../../common/libs/ammo';
 import { updateActiveCategory, updateActivePost, enableEditPostModal, enableAddCommentModal } from '../../../store/actions';
+import { dispatchLocationUpdate } from '../../../global-events';
 import OptionsPanel from '../../OptionsPanel';
 import CounterVoteScore from '../../CounterVoteScore';
 import CounterComments from '../../CounterComments';
-import {dispatchEvent, LOCATION_UPDATE} from '../../../global-events';
 
 class PostFooter extends React.Component {
   state = {
     isCommentsSliderActive: false
   };
-
-  updateActiveCategory = category => this.props.updateActiveCategory(category);
-
-  updateActivePost = post => this.props.updateActivePost(post);
 
   render() {
     const post = this.props.post;
@@ -30,10 +26,10 @@ class PostFooter extends React.Component {
             className="trigger view-category"
             title={`View posts from category '${post.category}'`}
             onClick={() => {
-              this.updateActiveCategory(post.category);
+              this.props.updateActiveCategory(post.category);
 
               // dispatch global event
-              dispatchEvent(LOCATION_UPDATE);
+              dispatchLocationUpdate();
             }}
           >
             <span className="category-name">{post.category}</span>
@@ -53,7 +49,7 @@ class PostFooter extends React.Component {
           onUpvote={() => this.props.upvotePost(post.id)}
           onDownvote={() => this.props.downvotePost(post.id)}
           onEdit={() => {
-            this.updateActivePost(post);
+            this.props.updateActivePost(post);
             this.props.enableEditPostModal();
           }}
           onDelete={() => this.props.deletePost(post.id)}
@@ -72,11 +68,8 @@ class PostFooter extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    activeCategory: state.activeCategory,
-    activePost: state.activePost
-  }
+const mapStateToProps = () => {
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
