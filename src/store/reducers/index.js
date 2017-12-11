@@ -53,7 +53,7 @@ export const initialState = {
  * @description Active category reducer
  * @param state
  * @param action
- * @returns {*}
+ * @returns {string}
  */
 const activeCategory = (state = initialState.activeCategory, action) => {
   switch ( action.type ) {
@@ -68,7 +68,7 @@ const activeCategory = (state = initialState.activeCategory, action) => {
  * @description Active post reducer
  * @param state
  * @param action
- * @returns {*}
+ * @returns {string}
  */
 const activePost = (state = initialState.activePost, action) => {
   switch ( action.type ) {
@@ -83,7 +83,7 @@ const activePost = (state = initialState.activePost, action) => {
  * @description Active comment reducer
  * @param state
  * @param action
- * @returns {{}|initialState.activeComment}
+ * @returns {string}
  */
 const activeComment = (state = initialState.activeComment, action) => {
   switch ( action.type ) {
@@ -211,7 +211,7 @@ const comments = (state = [], action) => {
  * @description Global store reducer
  * @param state
  * @param action
- * @returns {{posts: Array, categories: Array, activeCategory: {}, activePost: {}, activeComment: {}, modals: {addPost: boolean, ediPost: boolean, addComment: boolean, editComment: boolean}, sorting: {date: string, score: string}}}
+ * @returns {{posts: Array, categories: Array, activeCategory: string, activePost: string}}
  */
 const globalStore = (state = initialState, action) => {
   switch (action.type) {
