@@ -64,15 +64,7 @@
 @media (max-width: 1240px) {
 
   .component.single-post {
-    width: calc(100% - 20px);
-  }
-}
-
-
-/** mobile screens **/
-@media (max-width: 640px) {
-
-  .component.single-post {
     margin: 10px auto 0 auto;
+    width: calc(100% - 20px);
   }
 }
