@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import api from '../../../common/api';
 import '../css/CommentsList.css';
 import Comment from '../../Comment';
@@ -35,6 +36,10 @@ class CommentsList extends React.Component {
   }
 
   componentDidMount() {
+    if ( ! this.props.post ) {
+      return false;
+    }
+
     this.updateComments(() => {
       if ( ammo.isFunc(this.props.onReady) ) {
         this.props.onReady();
@@ -50,6 +55,10 @@ class CommentsList extends React.Component {
 
   render() {
     const comments = this.state.comments.sort(sortBy('timestamp'));
+
+    if ( ! comments || comments.length === 0 ) {
+      return false;
+    }
 
     return (
       <div className={`component comments-list ${this.props.isActive ? 'active' : ''}`}>
@@ -70,6 +79,12 @@ class CommentsList extends React.Component {
     )
   };
 }
+
+CommentsList.propTypes = {
+  post: PropTypes.object,
+  activeComment: PropTypes.object,
+  onReady: PropTypes.func
+};
 
 const mapStateToProps = state => {
   return {

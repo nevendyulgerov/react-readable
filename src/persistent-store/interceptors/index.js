@@ -17,7 +17,7 @@ import {
   DECREMENT_COMMENTS_COUNT,
   UPDATE_SORTING,
   NORMALIZE_PERSISTENT_STORE_DATA
-} from '../../store/actions';
+} from '../../store/types';
 import ammo from '../../common/libs/ammo';
 
 import { initialState } from '../../store/reducers';
@@ -38,6 +38,7 @@ export const storeInterceptor = (persistentStore, storeData, action) => {
       break;
 
     case DELETE_POST:
+      console.log(action.postId);
       persistentStore.setItem('posts', storeData.posts.filter(post => post.id !== action.postId));
       break;
 

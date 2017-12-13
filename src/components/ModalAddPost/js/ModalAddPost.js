@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Modal from '../../Modal';
 import slickNote from '../../../common/libs/slick-note';
 import { connect } from 'react-redux'
@@ -168,6 +169,11 @@ class ModalAddPost extends React.Component {
     )
   }
 }
+
+ModalAddPost.propTypes = {
+  isActive: PropTypes.bool,
+  categories: PropTypes.array
+};
 
 const mapStateToProps = state => {
   return {

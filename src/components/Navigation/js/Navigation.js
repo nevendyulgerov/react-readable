@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import '../css/Navigation.css';
 import ammo from '../../../common/libs/ammo';
 import { enableAddPostModal, updateActiveCategory } from '../../../store/actions';
@@ -85,6 +86,10 @@ class Navigation extends React.Component {
     );
   }
 }
+
+Navigation.propTypes = {
+  categories: PropTypes.array
+};
 
 const mapStateToProps = () => {
   return {};

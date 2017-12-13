@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import '../css/PostSingle.css';
 import ammo from '../../../common/libs/ammo';
-import api from '../../../common/api';
 import {deletePost, downvotePost, editPost, updateActiveCategory, upvotePost, updateActivePost, deleteComment } from '../../../store/actions';
 import { getCachedItem } from '../../../persistent-store';
 import PostHeader from '../../PostHeader';
@@ -11,6 +11,7 @@ import PostBody from '../../PostBody';
 import PostFooter from '../../PostFooter';
 import PostActions from '../../PostActions';
 import CommentsList from '../../CommentsList';
+import { dispatchLocationUpdate } from '../../../global-events';
 
 class PostSingle extends React.Component {
   state = {
@@ -24,6 +25,7 @@ class PostSingle extends React.Component {
       this.props.updateActivePost({});
       PostActions.deletePostComments(postId, comments => {
         comments.map(comment => this.props.deleteComment(comment.id));
+        dispatchLocationUpdate();
         ammo.select('.trigger.go-home').get().click();
       });
     });
@@ -66,15 +68,11 @@ class PostSingle extends React.Component {
   componentDidMount() {
     const urlParts = ammo.getUrlParts();
     const postId = urlParts[1];
-
     const cachedPost = getCachedItem('posts', 'id', postId);
+
     if ( ! cachedPost ) {
-      return api.getPost(postId, (err, post) => {
-        if ( err || ! ammo.isObj(post) ) {
-          return ammo.select('.trigger.go-home').get().click();
-        }
-        this.setState({ isActive: true });
-      })
+      dispatchLocationUpdate();
+      ammo.select('.trigger.go-home').get().click();
     }
 
     this.setState({ isActive: true });
@@ -95,7 +93,10 @@ class PostSingle extends React.Component {
     const isActive = this.state.isActive;
 
     return (
-      <article className={`component post single-post ${isActive ? 'active' : ''}`} data-id={post.id}>
+      <article
+        className={`component post single-post ${isActive ? 'active' : ''}`}
+        data-id={post.id}
+      >
 
         <PostHeader
           post={post}
@@ -127,6 +128,10 @@ class PostSingle extends React.Component {
     );
   }
 }
+
+PostSingle.propTypes = {
+  activePost: PropTypes.object
+};
 
 const mapStateToProps = state => {
   return {

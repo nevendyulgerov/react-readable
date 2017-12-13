@@ -25,6 +25,7 @@ class App extends Component {
     ammo.sequence()
       .chain(seq => {
         const dataSource = cachedPosts[0] ? 'cache' : 'server';
+
         if ( dataSource === 'cache' ) {
 
           // update global state
@@ -50,6 +51,7 @@ class App extends Component {
       })
       .chain(seq => {
         const dataSource = cachedCategories[0] ? 'cache' : 'server';
+
         if ( dataSource === 'cache' ) {
 
           // update global state
@@ -83,6 +85,7 @@ class App extends Component {
             categories={this.props.categories}
           />
 
+          {/* breadcrumbs */}
           <Breadcrumbs
             pollInterval={300}
             enableIdToTitleConversion={true}

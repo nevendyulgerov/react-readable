@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import '../css/PostPanel.css';
 import { deletePost, updateActiveCategory, upvotePost, downvotePost } from '../../../store/actions';
 import PostHeader from '../../PostHeader';
@@ -64,6 +65,10 @@ class PostPanel extends React.Component {
     );
   }
 }
+
+PostPanel.propTypes = {
+  post: PropTypes.object
+};
 
 const mapStateToProps = () => {
   return {}

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import '../css/PostFooter.css';
 import ammo from '../../../common/libs/ammo';
 import { updateActiveCategory, updateActivePost, enableEditPostModal, enableAddCommentModal } from '../../../store/actions';
@@ -67,6 +68,10 @@ class PostFooter extends React.Component {
     );
   }
 }
+
+PostFooter.propTypes = {
+  post: PropTypes.object
+};
 
 const mapStateToProps = () => {
   return {};

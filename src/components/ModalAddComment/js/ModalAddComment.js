@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import '../css/ModalAddComment.css';
 import api from '../../../common/api';
 import ammo from '../../../common/libs/ammo';
@@ -150,6 +151,12 @@ class ModalAddComment extends React.Component {
     )
   }
 }
+
+ModalAddComment.propTypes = {
+  isActive: PropTypes.bool,
+  categories: PropTypes.array,
+  activePost: PropTypes.object
+};
 
 const mapStateToProps = state => {
   return {

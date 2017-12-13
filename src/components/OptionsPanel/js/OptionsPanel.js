@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/OptionsPanel.css';
 import FaCommenting from 'react-icons/lib/fa/commenting';
 import FaThumbsUp from 'react-icons/lib/fa/thumbs-up';
@@ -40,6 +41,13 @@ const OptionsPanel = props => {
       </button>
     </div>
   )
+};
+
+OptionsPanel.propTypes = {
+  onUpvote: PropTypes.func,
+  onDownvote: PropTypes.func,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func
 };
 
 export default OptionsPanel;

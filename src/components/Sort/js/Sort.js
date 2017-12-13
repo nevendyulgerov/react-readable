@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../css/Sort.css';
 import ammo from '../../../common/libs/ammo';
@@ -15,24 +16,25 @@ const sortingItems = [{
   value: 'desc'
 }];
 
-class Sort extends React.Component {
+const Sort = props => {
+  const sorting = props.sorting || {};
 
-  setSorting = (type, direction) => {
-    this.props.updateSorting(type, direction);
-    this.disableSorting(type === 'date' ? 'score' : 'date');
+  const setSorting = (type, direction) => {
+    props.updateSorting(type, direction);
+    disableSorting(type === 'date' ? 'score' : 'date');
   };
 
-  disableSorting = type => this.props.updateSorting(type, '');
+  const disableSorting = type => props.updateSorting(type, '');
 
-  applySorting = event => {
+  const applySorting = event => {
     const sortingType = event.target.closest('.sort-by').getAttribute('data-sort-type');
     const direction = event.target.value;
     const isActive = direction !== '';
 
     if ( ! isActive ) {
-      this.disableSorting(sortingType);
+      disableSorting(sortingType);
     }
-    this.setSorting(sortingType, direction);
+    setSorting(sortingType, direction);
 
     ammo.selectAll(`.sort-by.${sortingType === 'date' ? 'score' : 'date'} option`).each((option, index) => {
       if ( index === 0 ) {
@@ -41,36 +43,36 @@ class Sort extends React.Component {
     });
   };
 
-  render() {
-    const sorting = this.props.sorting || {};
+  return (
+    <div className="component sort">
 
-    return (
-      <div className="component sort">
+      <div className="sort-by date" data-sort-type="date">
+        <span className="label">Sort by date:</span>
 
-        <div className="sort-by date" data-sort-type="date">
-          <span className="label">Sort by date:</span>
-
-          <select onChange={e => this.applySorting(e)} defaultValue={sorting.date}>
-            {sortingItems.map(item => (
-              <option value={item.value} key={item.value}>{ammo.titlize(item.label)}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="sort-by score" data-sort-type="score">
-          <span className="label">Sort by vote score:</span>
-
-          <select onChange={e => this.applySorting(e)} defaultValue={sorting.score}>
-            {sortingItems.map(item => (
-              <option value={item.value} key={item.value}>{ammo.titlize(item.label)}</option>
-            ))}
-          </select>
-        </div>
-
+        <select onChange={e => applySorting(e)} defaultValue={sorting.date}>
+          {sortingItems.map(item => (
+            <option value={item.value} key={item.value}>{ammo.titlize(item.label)}</option>
+          ))}
+        </select>
       </div>
-    )
-  }
-}
+
+      <div className="sort-by score" data-sort-type="score">
+        <span className="label">Sort by vote score:</span>
+
+        <select onChange={e => applySorting(e)} defaultValue={sorting.score}>
+          {sortingItems.map(item => (
+            <option value={item.value} key={item.value}>{ammo.titlize(item.label)}</option>
+          ))}
+        </select>
+      </div>
+
+    </div>
+  );
+};
+
+Sort.propTypes = {
+  sorting: PropTypes.object
+};
 
 const mapPropsToState = state => {
   return {

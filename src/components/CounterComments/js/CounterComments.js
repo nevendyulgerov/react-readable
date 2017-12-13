@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/CounterComments.css';
 import FaComment from 'react-icons/lib/fa/comment';
 
@@ -12,6 +13,10 @@ const CounterComments = props => {
       <span className="icon"><FaComment/></span>
     </div>
   );
+};
+
+CounterComments.propTypes = {
+  count: PropTypes.number
 };
 
 export default CounterComments;

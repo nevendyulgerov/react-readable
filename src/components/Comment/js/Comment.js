@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import '../css/Comment.css';
 import ammo from '../../../common/libs/ammo';
 import OptionsPanel from '../../OptionsPanel';
@@ -7,73 +8,75 @@ import CounterVoteScore from '../../CounterVoteScore';
 import { upvoteComment, downvoteComment, editComment, deleteComment, enableEditCommentModal, updateActiveComment, updateActivePost, decrementCommentsCount } from '../../../store/actions';
 import CommentActions from '../../CommentActions';
 
-class Comment extends React.Component {
+const Comment = props => {
+  const comment = props.comment;
 
-  upvote = () => {
-    CommentActions.voteOnComment(this.props.comment.id, this.props.post.id, 'upVote', () => {
-      this.props.upvoteComment(this.props.comment.id);
-      this.props.updateComments();
+  const upvote = () => {
+    CommentActions.voteOnComment(props.comment.id, props.post.id, 'upVote', () => {
+      props.upvoteComment(props.comment.id);
+      props.updateComments();
     });
   };
 
-  downvote = () => {
-    CommentActions.voteOnComment(this.props.comment.id, this.props.post.id, 'downVote', () => {
-      this.props.downvoteComment(this.props.comment.id);
-      this.props.updateComments();
+  const downvote = () => {
+    CommentActions.voteOnComment(props.comment.id, props.post.id, 'downVote', () => {
+      props.downvoteComment(props.comment.id);
+      props.updateComments();
     });
   };
 
-  edit = () => {
-    this.props.updateActivePost(this.props.post);
-    this.props.updateActiveComment(this.props.comment);
-    this.props.enableEditCommentModal();
+  const edit = () => {
+    props.updateActivePost(props.post);
+    props.updateActiveComment(props.comment);
+    props.enableEditCommentModal();
   };
 
-  remove = () => {
-    CommentActions.deleteComment(this.props.comment.id, this.props.post.id, () => {
-      this.props.deleteComment(this.props.comment.id);
-      this.props.updateComments();
-      this.props.decrementCommentsCount(this.props.activePost.id);
-      this.props.updateActivePost(Object.assign({}, this.props.activePost, {
-        commentCount: this.props.activePost.commentCount - 1
+  const remove = () => {
+    CommentActions.deleteComment(props.comment.id, props.post.id, () => {
+      props.deleteComment(props.comment.id);
+      props.updateComments();
+      props.decrementCommentsCount(props.activePost.id);
+      props.updateActivePost(Object.assign({}, props.activePost, {
+        commentCount: props.activePost.commentCount - 1
       }));
-      this.props.updateActiveComment({});
+      props.updateActiveComment({});
     });
   };
 
-  render() {
-    const comment = this.props.comment;
+  return (
+    <div className="component comment">
 
-    return (
-      <div className="component comment">
-
-        <div className="comment-header">
-          <div className="comment-meta">
-            <span className="comment-author" title={'Author'}>{comment.author}</span>
-            <time className="comment-date" title="Created date">{ammo.formatTime(comment.timestamp)}</time>
-          </div>
-        </div>
-
-        <div className="comment-body">
-          <p className="comment-content">{comment.body}</p>
-        </div>
-
-        <div className="comment-footer">
-          <OptionsPanel
-            type={'comment'}
-            onUpvote={this.upvote}
-            onDownvote={this.downvote}
-            onEdit={this.edit}
-            onDelete={this.remove}
-          />
-
-          <CounterVoteScore score={comment.voteScore}/>
-
+      <div className="comment-header">
+        <div className="comment-meta">
+          <span className="comment-author" title={'Author'}>{comment.author}</span>
+          <time className="comment-date" title="Created date">{ammo.formatTime(comment.timestamp)}</time>
         </div>
       </div>
-    );
-  }
-}
+
+      <div className="comment-body">
+        <p className="comment-content">{comment.body}</p>
+      </div>
+
+      <div className="comment-footer">
+        <OptionsPanel
+          type={'comment'}
+          onUpvote={upvote}
+          onDownvote={downvote}
+          onEdit={edit}
+          onDelete={remove}
+        />
+
+        <CounterVoteScore score={comment.voteScore}/>
+
+      </div>
+    </div>
+  );
+};
+
+Comment.propTypes = {
+  comment: PropTypes.object,
+  post: PropTypes.object
+};
 
 const mapStateToProps = state => {
   return {

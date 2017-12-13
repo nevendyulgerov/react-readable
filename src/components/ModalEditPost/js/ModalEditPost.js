@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Modal from '../../Modal';
 import ammo from '../../../common/libs/ammo';
 import slickNote from '../../../common/libs/slick-note';
@@ -130,6 +131,12 @@ class ModalEditPost extends React.Component {
     )
   }
 }
+
+ModalEditPost.propTypes = {
+  isActive: PropTypes.bool,
+  categories: PropTypes.array,
+  activePost: PropTypes.object
+};
 
 const mapStateToProps = state => {
   return {

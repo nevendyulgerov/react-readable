@@ -1,12 +1,13 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import reducers from './reducers';
+import logger from 'redux-logger';
 import { updateGlobalStore } from './actions';
 import { persistentStore, persistentStoreInterceptor } from '../persistent-store';
 
 // expose store
 export const store = createStore(
   reducers,
-  compose(applyMiddleware(persistentStoreInterceptor))
+  compose(applyMiddleware(logger, persistentStoreInterceptor))
 );
 
 const syncPersistentStore = () => {

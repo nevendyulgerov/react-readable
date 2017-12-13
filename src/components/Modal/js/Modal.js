@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/Modal.css';
 import ammo from '../../../common/libs/ammo';
 
@@ -37,7 +38,7 @@ class Modal extends React.Component {
   render() {
     const title = this.props.title || '';
     const type = this.props.type || '';
-    const cancelText = this.props.calcelText || 'Cancel';
+    const cancelText = this.props.cancelText || 'Cancel';
     const confirmText = this.props.confirmText || 'OK';
     const isActive = this.props.isActive;
 
@@ -75,5 +76,10 @@ class Modal extends React.Component {
     );
   }
 }
+
+Modal.propTypes = {
+  showModal: PropTypes.bool,
+  isActive: PropTypes.bool
+};
 
 export default Modal;

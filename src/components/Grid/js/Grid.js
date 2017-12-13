@@ -3,6 +3,7 @@ import sortBy from 'sort-by';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
+import PropTypes from 'prop-types';
 import '../css/Grid.css';
 import ammo from '../../../common/libs/ammo';
 import api from '../../../common/api';
@@ -81,6 +82,12 @@ class Grid extends React.Component {
     );
   }
 }
+
+Grid.propTypes = {
+  category: PropTypes.string,
+  posts: PropTypes.array,
+  sorting: PropTypes.object
+};
 
 const mapPropsToState = state => {
   return {

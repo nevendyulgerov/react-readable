@@ -29,7 +29,7 @@ import {
   INCREMENT_COMMENTS_COUNT,
   DECREMENT_COMMENTS_COUNT,
   UPDATE_SORTING
-} from '../actions';
+} from '../types';
 
 export const initialState = {
   posts: [],

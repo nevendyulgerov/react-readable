@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/ModalEditComment.css';
 import Modal from '../../Modal';
 import ammo from '../../../common/libs/ammo';
@@ -108,6 +109,11 @@ class ModalEditPost extends React.Component {
     )
   }
 }
+
+ModalEditPost.propTypes = {
+  isActive: PropTypes.bool,
+  categories: PropTypes.array
+};
 
 const mapStateToProps = state => {
   return {

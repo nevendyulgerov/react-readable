@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import '../css/Breadcrumbs.css';
 import ammo from '../../../common/libs/ammo';
 import { getCachedItem } from '../../../persistent-store';
@@ -114,6 +115,11 @@ class Breadcrumbs extends React.Component {
     )
   }
 }
+
+Breadcrumbs.propTypes = {
+  enableIdToTitleConversion: PropTypes.bool,
+  categories: PropTypes.array
+};
 
 const mapStateToProps = state => {
   return {

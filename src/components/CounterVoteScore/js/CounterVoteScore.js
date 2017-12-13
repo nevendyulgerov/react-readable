@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/CounterVoteScore.css';
 import FaThumbsUp from 'react-icons/lib/fa/thumbs-up';
 
@@ -12,6 +13,10 @@ const CounterVoteScore = props => {
       <span className="icon"><FaThumbsUp/></span>
     </div>
   );
+};
+
+CounterVoteScore.propTypes = {
+  score: PropTypes.number
 };
 
 export default CounterVoteScore;

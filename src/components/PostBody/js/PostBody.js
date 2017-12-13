@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/PostBody.css';
 
 const PostBody = props => {
@@ -9,6 +10,11 @@ const PostBody = props => {
       <p className={`${! props.isSinglePage ? 'post-excerpt' : ''}`}>{content}</p>
     </div>
   );
+};
+
+PostBody.propTypes = {
+  post: PropTypes.object,
+  isSinglePage: PropTypes.bool
 };
 
 export default PostBody;
